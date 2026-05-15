@@ -1,0 +1,31 @@
+{
+  "name": "claude-social-bridge",
+  "version": "1.0.0",
+  "description": "One-click Slack + Telegram bot powered by Claude, with threaded replies, owner controls, and deploy-ready setup.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "check": "node --check src/index.js && node --check src/claude.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js"
+  },
+  "keywords": [
+    "claude",
+    "slack-bot",
+    "telegram-bot",
+    "anthropic",
+    "ai-agent",
+    "socket-mode",
+    "one-click"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@slack/bolt": "^3.21.4",
+    "dotenv": "^16.4.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

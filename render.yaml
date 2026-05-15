@@ -1,0 +1,16 @@
+services:
+  - type: worker
+    name: claude-social-bridge
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: SLACK_BOT_TOKEN
+        sync: false
+      - key: SLACK_APP_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
