@@ -35,6 +35,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - [Demo script](docs/DEMO-SCRIPT.md)
 - [Comparison page](docs/COMPARISONS.md)
 - [Wikipedia-safe materials](docs/wikipedia/WIKIPEDIA-PLAN.md)
+- [Release notes](RELEASE-NOTES-v1.0.0.md)
 
 ## What You Get
 
