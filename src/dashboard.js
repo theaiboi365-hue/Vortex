@@ -293,6 +293,7 @@ function page() {
           </div>
           <div class="run-command">
             <label>Run Vortex locally</label>
+            <p>Paste this in PowerShell, not inside this dashboard.</p>
             <div class="code-box">
               <pre id="runCommand">cd "${process.cwd()}"
 npm.cmd start</pre>
