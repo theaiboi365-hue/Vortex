@@ -149,7 +149,7 @@ function page() {
     .dot { width: 10px; height: 10px; border-radius: 99px; display: inline-block; margin-right: 8px; background: var(--red); }
     .ok .dot { background: var(--green); }
     label { display: block; color: #dbe8e2; font-size: 13px; margin-bottom: 7px; }
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       min-height: 42px;
       border: 1px solid var(--line);
@@ -202,19 +202,77 @@ function page() {
         <div class="body">
           <form id="setupForm" class="form-grid">
             <div><label>Bot name</label><input name="BOT_NAME" placeholder="Vortex" /></div>
-            <div><label>Default AI brain</label><input name="AI_PROVIDER" placeholder="codex" /></div>
-            <div><label>Slack AI brain</label><input name="SLACK_AI_PROVIDER" placeholder="blank = default" /></div>
-            <div><label>Telegram AI brain</label><input name="TELEGRAM_AI_PROVIDER" placeholder="blank = default" /></div>
+            <div>
+              <label>Default AI brain</label>
+              <select name="AI_PROVIDER">
+                <option value="codex">Codex</option>
+                <option value="anthropic">Claude / Anthropic</option>
+                <option value="openai">OpenAI-compatible</option>
+                <option value="ollama">Ollama local</option>
+              </select>
+            </div>
+            <div>
+              <label>Slack AI brain</label>
+              <select name="SLACK_AI_PROVIDER">
+                <option value="">Use default brain</option>
+                <option value="codex">Codex</option>
+                <option value="anthropic">Claude / Anthropic</option>
+                <option value="openai">OpenAI-compatible</option>
+                <option value="ollama">Ollama local</option>
+              </select>
+            </div>
+            <div>
+              <label>Telegram AI brain</label>
+              <select name="TELEGRAM_AI_PROVIDER">
+                <option value="">Use default brain</option>
+                <option value="codex">Codex</option>
+                <option value="anthropic">Claude / Anthropic</option>
+                <option value="openai">OpenAI-compatible</option>
+                <option value="ollama">Ollama local</option>
+              </select>
+            </div>
             <div><label>Codex command</label><input name="CODEX_COMMAND" placeholder="codex" /></div>
-            <div><label>Codex model</label><input name="CODEX_MODEL" placeholder="optional" /></div>
+            <div>
+              <label>Codex model</label>
+              <select name="CODEX_MODEL">
+                <option value="">Codex default</option>
+                <option value="gpt-5.3-codex">GPT-5.3 Codex</option>
+                <option value="gpt-5.5">GPT-5.5</option>
+                <option value="gpt-5.4">GPT-5.4</option>
+                <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
+                <option value="gpt-5.2">GPT-5.2</option>
+              </select>
+            </div>
             <div class="wide"><label>Codex extra args</label><input name="CODEX_EXTRA_ARGS" placeholder="optional comma-separated args" /></div>
-            <div><label>Claude model</label><input name="CLAUDE_MODEL" placeholder="claude-3-5-sonnet-latest" /></div>
+            <div>
+              <label>Claude model</label>
+              <select name="CLAUDE_MODEL">
+                <option value="claude-3-5-sonnet-latest">Claude 3.5 Sonnet</option>
+                <option value="claude-3-5-haiku-latest">Claude 3.5 Haiku</option>
+              </select>
+            </div>
             <div><label>Anthropic API key</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" placeholder="sk-ant-..." /></div>
             <div><label>OpenAI API key</label><input name="OPENAI_API_KEY" type="password" autocomplete="off" placeholder="sk-..." /></div>
             <div><label>OpenAI base URL</label><input name="OPENAI_BASE_URL" placeholder="https://api.openai.com/v1" /></div>
-            <div><label>OpenAI model</label><input name="OPENAI_MODEL" placeholder="gpt-4.1-mini" /></div>
+            <div>
+              <label>OpenAI model</label>
+              <select name="OPENAI_MODEL">
+                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+                <option value="gpt-4.1">GPT-4.1</option>
+                <option value="gpt-4o-mini">GPT-4o Mini</option>
+                <option value="gpt-4o">GPT-4o</option>
+              </select>
+            </div>
             <div><label>Ollama base URL</label><input name="OLLAMA_BASE_URL" placeholder="http://127.0.0.1:11434" /></div>
-            <div><label>Ollama model</label><input name="OLLAMA_MODEL" placeholder="gemma3:270m" /></div>
+            <div>
+              <label>Ollama model</label>
+              <select name="OLLAMA_MODEL">
+                <option value="gemma3:270m">Gemma 3 270M</option>
+                <option value="llama3.2">Llama 3.2</option>
+                <option value="mistral">Mistral</option>
+                <option value="qwen2.5:0.5b">Qwen 2.5 0.5B</option>
+              </select>
+            </div>
             <div><label>Slack bot token</label><input name="SLACK_BOT_TOKEN" type="password" autocomplete="off" placeholder="xoxb-..." /></div>
             <div><label>Slack app token</label><input name="SLACK_APP_TOKEN" type="password" autocomplete="off" placeholder="xapp-..." /></div>
             <div><label>Slack signing secret</label><input name="SLACK_SIGNING_SECRET" type="password" autocomplete="off" /></div>
@@ -303,7 +361,13 @@ npm.cmd start</pre>
       setTile("slack", data.slack, data.slack ? "Socket Mode tokens saved" : "Add xoxb + xapp tokens");
       setTile("telegram", data.telegram, data.telegram ? "BotFather token saved" : "Add TELEGRAM_BOT_TOKEN");
       const values = await api("/api/env");
-      for (const field of fields) field.value = values[field.name] || "";
+      for (const field of fields) {
+        const value = values[field.name] || "";
+        if (field.tagName === "SELECT" && value && !Array.from(field.options).some((option) => option.value === value)) {
+          field.add(new Option(value + " (saved custom)", value));
+        }
+        field.value = value;
+      }
     }
 
     form.addEventListener("submit", async (event) => {
