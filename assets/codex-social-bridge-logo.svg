@@ -1,0 +1,25 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="360" rx="42" fill="#080B0E"/>
+  <path d="M0 0H1200V360H0V0Z" fill="url(#grid)"/>
+  <circle cx="168" cy="178" r="92" fill="#101820" stroke="#2D3B45" stroke-width="3"/>
+  <path d="M167.5 72L235 110.5V188.5L167.5 228L100 188.5V110.5L167.5 72Z" fill="#121D24" stroke="#70E39F" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M167.5 112L200 130.5V169.5L167.5 188L135 169.5V130.5L167.5 112Z" fill="#6BD8FF"/>
+  <path d="M100 188.5L167.5 150L235 188.5" stroke="#70E39F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M167.5 150V228" stroke="#70E39F" stroke-width="8" stroke-linecap="round"/>
+  <path d="M298 122H342C375 122 397 144 397 178C397 212 375 234 342 234H298V122ZM340 205C356 205 367 194 367 178C367 162 356 151 340 151H328V205H340Z" fill="#EFF5F1"/>
+  <path d="M423 122H454V234H423V122Z" fill="#EFF5F1"/>
+  <path d="M482 122H573V151H512V166H566V193H512V205H575V234H482V122Z" fill="#EFF5F1"/>
+  <path d="M604 122H636L678 181V122H708V234H676L634 175V234H604V122Z" fill="#EFF5F1"/>
+  <path d="M735 178C735 144 761 119 797 119C826 119 848 135 856 160L828 171C823 157 813 150 798 150C780 150 767 162 767 178C767 195 780 207 798 207C813 207 824 199 829 185L858 195C849 221 827 237 797 237C761 237 735 212 735 178Z" fill="#EFF5F1"/>
+  <path d="M878 122H909V205H963V234H878V122Z" fill="#EFF5F1"/>
+  <path d="M982 122H1013V234H982V122Z" fill="#EFF5F1"/>
+  <path d="M1041 122H1132V151H1071V166H1127V193H1071V205H1134V234H1041V122Z" fill="#EFF5F1"/>
+  <text x="300" y="282" fill="#A9B5BF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" letter-spacing="1">Codex-first Slack + Telegram bot with switchable AI brains</text>
+  <path d="M302 82H491" stroke="#70E39F" stroke-width="6" stroke-linecap="round"/>
+  <path d="M302 86H407" stroke="#6BD8FF" stroke-width="3" stroke-linecap="round"/>
+  <defs>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse">
+      <path d="M38 0H0V38" stroke="#13202A" stroke-width="1"/>
+    </pattern>
+  </defs>
+</svg>

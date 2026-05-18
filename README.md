@@ -1,5 +1,7 @@
 # Codex Social Bridge
 
+![Codex Social Bridge logo](assets/codex-social-bridge-logo.svg)
+
 Codex-first bot repo for Slack and Telegram, with an OpenClaw-style local control UI and per-function AI brain routing.
 
 Default behavior: Codex is the brain for everything. Users can still change the brain globally, or choose a different AI for Slack, Telegram, or later functions.
