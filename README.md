@@ -2,9 +2,39 @@
 
 ![Codex Social Bridge logo](assets/codex-social-bridge-logo.svg)
 
-Codex-first bot repo for Slack and Telegram, with an OpenClaw-style local control UI and per-function AI brain routing.
+[![Windows setup](https://img.shields.io/badge/Windows-one--command_setup-70e39f?style=for-the-badge&logo=windows)](INSTALL-WINDOWS.md)
+[![Slack](https://img.shields.io/badge/Slack-Socket_Mode-6bd8ff?style=for-the-badge&logo=slack)](#slack-setup)
+[![Telegram](https://img.shields.io/badge/Telegram-BotFather-70e39f?style=for-the-badge&logo=telegram)](#telegram-setup)
+[![License: MIT](https://img.shields.io/badge/License-MIT-eff5f1?style=for-the-badge)](LICENSE)
+
+Run Codex from Telegram and Slack with one PowerShell command.
+
+Codex Social Bridge turns a Windows laptop into a personal AI command center: Telegram for phone control, Slack for team channels, and a local dashboard for choosing which AI brain handles each function.
 
 Default behavior: Codex is the brain for everything. Users can still change the brain globally, or choose a different AI for Slack, Telegram, or later functions.
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/codex-social-bridge/main/scripts/setup-windows.ps1 | iex"
+```
+
+## Why This Exists
+
+Most agent projects are powerful but heavy. This repo is designed around the shortest useful path:
+
+1. Download with one command.
+2. Open a local setup UI.
+3. Paste Telegram and Slack tokens.
+4. Message Codex from phone or team chat.
+5. Route specific functions to Codex, Claude, OpenAI-compatible APIs, or Ollama.
+
+## Launch Kit
+
+- [Windows one-click setup](INSTALL-WINDOWS.md)
+- [Press kit](docs/PRESS-KIT.md)
+- [Launch plan](docs/LAUNCH-PLAN.md)
+- [Demo script](docs/DEMO-SCRIPT.md)
+- [Comparison page](docs/COMPARISONS.md)
+- [Wikipedia-safe materials](docs/wikipedia/WIKIPEDIA-PLAN.md)
 
 ## What You Get
 
@@ -22,6 +52,15 @@ Default behavior: Codex is the brain for everything. Users can still change the 
 - Render worker deploy file
 - GitHub Actions syntax check
 - No secrets committed
+
+## Compared With Other Agent Projects
+
+| Project style | Main strength | Codex Social Bridge difference |
+| --- | --- | --- |
+| OpenClaw-style agent UI | Broad agent workspace and polished UI | Focused chat bridge for Codex from Telegram and Slack |
+| Hermes-style messaging agent | Messaging-first agent experience | Windows-first one-command install plus per-function AI routing |
+| Generic Telegram bot | Simple phone chat | Codex default brain, Slack threading, local dashboard, and startup automation |
+| Local Ollama chatbot | Cheap local inference | Can keep Codex for coding and use Ollama only where wanted |
 
 ## Quick Start
 
