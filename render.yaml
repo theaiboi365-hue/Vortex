@@ -1,6 +1,6 @@
 services:
   - type: worker
-    name: codex-social-bridge
+    name: vortex-agent
     env: node
     plan: starter
     buildCommand: npm install

@@ -1,5 +1,5 @@
 {
-  "name": "codex-social-bridge",
+  "name": "vortex-agent",
   "version": "1.0.0",
   "description": "Vortex is a Codex-first Slack and Telegram agent with per-function AI brain routing.",
   "type": "module",
