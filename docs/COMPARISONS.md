@@ -2,13 +2,13 @@
 
 This page is intentionally factual and restrained. It is not meant to attack or impersonate any other project.
 
-## Vortex Relay In One Sentence
+## Vortex In One Sentence
 
-Vortex Relay is a Windows-first Slack and Telegram bridge that uses Codex by default and lets users route specific functions to other AI providers.
+Vortex is a Windows-first Slack and Telegram bridge that uses Codex by default and lets users route specific functions to other AI providers.
 
 ## Comparison Table
 
-| Category | Vortex Relay |
+| Category | Vortex |
 | --- | --- |
 | Primary use case | Use Codex from Telegram and Slack |
 | Install style | One PowerShell command on Windows |
@@ -22,13 +22,13 @@ Vortex Relay is a Windows-first Slack and Telegram bridge that uses Codex by def
 
 ## OpenClaw-Style Projects
 
-OpenClaw-style projects usually emphasize a broader agent workspace and polished UI. Vortex Relay is narrower: it focuses on getting Codex into Telegram and Slack quickly, with minimal setup and a local configuration dashboard.
+OpenClaw-style projects usually emphasize a broader agent workspace and polished UI. Vortex is narrower: it focuses on getting Codex into Telegram and Slack quickly, with minimal setup and a local configuration dashboard.
 
 ## Hermes-Style Projects
 
-Hermes-style projects usually emphasize messaging-agent workflows. Vortex Relay uses a similar messaging-first idea, but focuses on Windows setup, Codex as the default brain, and per-function provider routing.
+Hermes-style projects usually emphasize messaging-agent workflows. Vortex uses a similar messaging-first idea, but focuses on Windows setup, Codex as the default brain, and per-function provider routing.
 
-## When To Use Vortex Relay
+## When To Use Vortex
 
 - You want Codex from a phone through Telegram.
 - You want Codex in a Slack channel.

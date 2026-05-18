@@ -1,6 +1,6 @@
-# Vortex Relay v1.0.0
+# Vortex v1.0.0
 
-Vortex Relay is ready for its first public release.
+Vortex is ready for its first public release.
 
 ## Main Hook
 

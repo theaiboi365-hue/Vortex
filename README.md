@@ -1,6 +1,6 @@
-# Vortex Relay
+# Vortex
 
-![Vortex Relay logo](assets/codex-social-bridge-logo.svg)
+![Vortex logo](assets/codex-social-bridge-logo.svg)
 
 [![Windows setup](https://img.shields.io/badge/Windows-one--command_setup-70e39f?style=for-the-badge&logo=windows)](INSTALL-WINDOWS.md)
 [![Slack](https://img.shields.io/badge/Slack-Socket_Mode-6bd8ff?style=for-the-badge&logo=slack)](#slack-setup)
@@ -9,7 +9,7 @@
 
 Run Codex from Telegram and Slack with one PowerShell command.
 
-Vortex Relay turns a Windows laptop into a personal AI command center: Telegram for phone control, Slack for team channels, and a local dashboard for choosing which AI brain handles each function.
+Vortex turns a Windows laptop into a personal AI command center: Telegram for phone control, Slack for team channels, and a local dashboard for choosing which AI brain handles each function.
 
 Default behavior: Codex is the brain for everything. Users can still change the brain globally, or choose a different AI for Slack, Telegram, or later functions.
 
@@ -66,7 +66,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 
 ## Compared With Other Agent Projects
 
-| Project style | Main strength | Vortex Relay difference |
+| Project style | Main strength | Vortex difference |
 | --- | --- | --- |
 | OpenClaw-style agent UI | Broad agent workspace and polished UI | Focused chat bridge for Codex from Telegram and Slack |
 | Hermes-style messaging agent | Messaging-first agent experience | Windows-first one-command install plus per-function AI routing |
@@ -84,6 +84,24 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 ```
 
 This downloads the repo, installs dependencies, enables startup automation, creates a desktop launcher, starts the bot, and opens:
+
+```text
+http://127.0.0.1:8787
+```
+
+### Terminal Installation
+
+For developers who prefer terminal setup:
+
+```powershell
+git clone https://github.com/theaiboi365-hue/codex-social-bridge.git
+cd codex-social-bridge
+npm.cmd install
+Copy-Item .env.example .env
+npm.cmd start
+```
+
+Then open:
 
 ```text
 http://127.0.0.1:8787
@@ -245,7 +263,7 @@ OPENAI_MODEL=gpt-4.1-mini
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=gemma3:270m
 DASHBOARD_PORT=8787
-BOT_NAME=Vortex Relay
+BOT_NAME=Vortex
 SYSTEM_PROMPT=You are Codex, a concise, useful AI assistant inside Slack and Telegram.
 MAX_HISTORY_MESSAGES=12
 REPLY_IN_THREAD=true

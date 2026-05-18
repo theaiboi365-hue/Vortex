@@ -2,7 +2,7 @@
 
 ## Important Boundary
 
-Do not add Vortex Relay links to unrelated Wikipedia pages, including pages for other projects, unless independent reliable sources explicitly discuss Vortex Relay in that context.
+Do not add Vortex links to unrelated Wikipedia pages, including pages for other projects, unless independent reliable sources explicitly discuss Vortex in that context.
 
 Wikipedia is not a launch channel. Promotional editing can be reverted quickly and can damage the project reputation.
 

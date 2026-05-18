@@ -6,11 +6,11 @@ Run Codex from Telegram and Slack.
 
 ## Product Name
 
-Vortex Relay.
+Vortex.
 
 ## Short Description
 
-Vortex Relay is a Windows-first AI command center that connects Codex to Telegram and Slack with a one-command installer, local setup dashboard, and switchable AI brain routing.
+Vortex is a Windows-first AI command center that connects Codex to Telegram and Slack with a one-command installer, local setup dashboard, and switchable AI brain routing.
 
 ## Keywords
 
@@ -63,7 +63,7 @@ vortex-relay
 Title:
 
 ```text
-Vortex Relay: Run Codex from Telegram and Slack
+Vortex: Run Codex from Telegram and Slack
 ```
 
 Description:

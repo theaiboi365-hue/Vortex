@@ -1,14 +1,14 @@
-# Draft: Vortex Relay
+# Draft: Vortex
 
 This is a neutral draft, not a publication-ready Wikipedia article. It should not be submitted until the project has enough independent reliable sources.
 
 ## Lead
 
-Vortex Relay is an open-source software project that connects a local Codex command-line workflow to messaging platforms such as Telegram and Slack. The project provides a local setup dashboard, Windows installation scripts, and configurable routing between multiple AI providers.
+Vortex is an open-source software project that connects a local Codex command-line workflow to messaging platforms such as Telegram and Slack. The project provides a local setup dashboard, Windows installation scripts, and configurable routing between multiple AI providers.
 
 ## Features
 
-Vortex Relay includes a Windows PowerShell installer, a local web dashboard for configuration, Telegram BotFather token setup, Slack Socket Mode support, threaded Slack replies, and environment-based routing between Codex, Anthropic, OpenAI-compatible APIs, and Ollama.
+Vortex includes a Windows PowerShell installer, a local web dashboard for configuration, Telegram BotFather token setup, Slack Socket Mode support, threaded Slack replies, and environment-based routing between Codex, Anthropic, OpenAI-compatible APIs, and Ollama.
 
 ## Development
 

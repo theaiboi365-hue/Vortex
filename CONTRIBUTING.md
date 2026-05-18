@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Vortex Relay.
+Thanks for helping improve Vortex.
 
 ## Good First Contributions
 

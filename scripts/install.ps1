@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host ""
-Write-Host "Vortex Relay installer" -ForegroundColor Cyan
+Write-Host "Vortex installer" -ForegroundColor Cyan
 Write-Host "This installs dependencies, prepares .env, and gives you the setup UI." -ForegroundColor Gray
 Write-Host ""
 

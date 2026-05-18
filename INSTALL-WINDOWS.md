@@ -1,6 +1,6 @@
 # Windows One-Click Setup
 
-Vortex Relay can be installed from GitHub with one PowerShell command.
+Vortex can be installed from GitHub with one PowerShell command.
 
 ## Install
 
@@ -10,10 +10,22 @@ Open PowerShell and run:
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/codex-social-bridge/main/scripts/setup-windows.ps1 | iex"
 ```
 
+## Terminal Install
+
+For a normal terminal install:
+
+```powershell
+git clone https://github.com/theaiboi365-hue/codex-social-bridge.git
+cd codex-social-bridge
+npm.cmd install
+Copy-Item .env.example .env
+npm.cmd start
+```
+
 The installer will:
 
 - Download the latest GitHub repo zip
-- Install it to `%LOCALAPPDATA%\VortexRelay\app`
+- Install it to `%LOCALAPPDATA%\Vortex\app`
 - Run `npm.cmd install`
 - Create `.env` from `.env.example`
 - Enable startup automation
@@ -34,13 +46,13 @@ In the setup UI:
 ## Run Manually
 
 ```powershell
-cd "$env:LOCALAPPDATA\VortexRelay\app"
+cd "$env:LOCALAPPDATA\Vortex\app"
 powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
 ```
 
 ## Enable Startup Again
 
 ```powershell
-cd "$env:LOCALAPPDATA\VortexRelay\app"
+cd "$env:LOCALAPPDATA\Vortex\app"
 powershell -ExecutionPolicy Bypass -File .\scripts\make-startup-shortcut.ps1
 ```

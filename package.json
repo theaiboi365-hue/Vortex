@@ -1,7 +1,7 @@
 {
   "name": "codex-social-bridge",
   "version": "1.0.0",
-  "description": "Vortex Relay is a Codex-first Slack and Telegram agent with per-function AI brain routing.",
+  "description": "Vortex is a Codex-first Slack and Telegram agent with per-function AI brain routing.",
   "type": "module",
   "main": "src/index.js",
   "scripts": {

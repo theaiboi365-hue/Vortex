@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $repoZipUrl = "https://github.com/theaiboi365-hue/codex-social-bridge/archive/refs/heads/main.zip"
-$installRoot = Join-Path $env:LOCALAPPDATA "VortexRelay"
+$installRoot = Join-Path $env:LOCALAPPDATA "Vortex"
 $appRoot = Join-Path $installRoot "app"
 $zipPath = Join-Path $installRoot "codex-social-bridge-main.zip"
 $extractRoot = Join-Path $installRoot "extract"
@@ -21,7 +21,7 @@ function Require-Command($name, $installHint) {
 }
 
 Write-Host ""
-Write-Host "Vortex Relay Windows setup" -ForegroundColor Green
+Write-Host "Vortex Windows setup" -ForegroundColor Green
 Write-Host "This downloads the bot, installs dependencies, enables startup, and opens the setup UI." -ForegroundColor Gray
 
 Require-Command "node" "Install Node.js 20+ from https://nodejs.org, then run this setup again."
@@ -69,7 +69,7 @@ try {
 
   Write-Step "Creating desktop launcher"
   $desktop = [Environment]::GetFolderPath("Desktop")
-  $shortcutPath = Join-Path $desktop "Vortex Relay.lnk"
+  $shortcutPath = Join-Path $desktop "Vortex.lnk"
   $shell = New-Object -ComObject WScript.Shell
   $shortcut = $shell.CreateShortcut($shortcutPath)
   $shortcut.TargetPath = "powershell.exe"
