@@ -175,6 +175,8 @@ function page() {
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
     code, pre { font-family: "Cascadia Code", Consolas, monospace; }
     pre { overflow: auto; background: #080b0e; border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #cce8d6; }
+    .run-command { margin-top: 14px; }
+    .run-command pre { margin: 8px 0 0; white-space: pre-wrap; }
     ol { color: var(--muted); padding-left: 20px; line-height: 1.65; }
     .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
     .tab { color: var(--text); background: #202832; border: 1px solid var(--line); }
@@ -286,6 +288,11 @@ function page() {
           <div class="actions">
             <button form="setupForm" type="submit">Save .env</button>
             <button class="ghost" id="refresh" type="button">Refresh Status</button>
+          </div>
+          <div class="run-command">
+            <label>Run Vortex locally</label>
+            <pre>cd "${process.cwd()}"
+npm.cmd start</pre>
           </div>
           <div class="notice" id="notice"></div>
         </div>
