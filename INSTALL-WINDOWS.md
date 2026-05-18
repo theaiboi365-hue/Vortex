@@ -7,7 +7,7 @@ Vortex can be installed from GitHub with one PowerShell command.
 Open PowerShell and run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex-agent/main/scripts/setup-windows.ps1 | iex"
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
 ## Terminal Install
@@ -15,8 +15,8 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 For a normal terminal install:
 
 ```powershell
-git clone https://github.com/theaiboi365-hue/Vortex-agent.git
-cd Vortex-agent
+git clone https://github.com/theaiboi365-hue/Vortex.git
+cd Vortex
 npm.cmd install
 Copy-Item .env.example .env
 npm.cmd start

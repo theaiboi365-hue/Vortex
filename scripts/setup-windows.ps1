@@ -1,9 +1,9 @@
 $ErrorActionPreference = "Stop"
 
-$repoZipUrl = "https://github.com/theaiboi365-hue/Vortex-agent/archive/refs/heads/main.zip"
+$repoZipUrl = "https://github.com/theaiboi365-hue/Vortex/archive/refs/heads/main.zip"
 $installRoot = Join-Path $env:LOCALAPPDATA "Vortex"
 $appRoot = Join-Path $installRoot "app"
-$zipPath = Join-Path $installRoot "Vortex-agent-main.zip"
+$zipPath = Join-Path $installRoot "Vortex-main.zip"
 $extractRoot = Join-Path $installRoot "extract"
 $dashboardUrl = "http://127.0.0.1:8787"
 
@@ -37,9 +37,9 @@ Invoke-WebRequest -Uri $repoZipUrl -OutFile $zipPath
 
 Write-Step "Extracting files"
 Expand-Archive -LiteralPath $zipPath -DestinationPath $extractRoot -Force
-$downloadedRoot = Join-Path $extractRoot "Vortex-agent-main"
+$downloadedRoot = Join-Path $extractRoot "Vortex-main"
 if (-not (Test-Path $downloadedRoot)) {
-  throw "Downloaded archive did not contain Vortex-agent-main."
+  throw "Downloaded archive did not contain Vortex-main."
 }
 
 if (Test-Path $appRoot) {

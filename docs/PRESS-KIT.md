@@ -21,9 +21,9 @@ Vortex turns a Windows laptop into a practical AI command center. After running 
 
 ## Project Links
 
-- GitHub: https://github.com/theaiboi365-hue/Vortex-agent
-- Windows install docs: https://github.com/theaiboi365-hue/Vortex-agent/blob/main/INSTALL-WINDOWS.md
-- Logo: https://github.com/theaiboi365-hue/Vortex-agent/blob/main/assets/vortex-agent-logo.svg
+- GitHub: https://github.com/theaiboi365-hue/Vortex
+- Windows install docs: https://github.com/theaiboi365-hue/Vortex/blob/main/INSTALL-WINDOWS.md
+- Logo: https://github.com/theaiboi365-hue/Vortex/blob/main/assets/vortex-logo.svg
 
 ## Suggested Headlines
 
@@ -47,7 +47,7 @@ It has:
 
 The hook is simple: Codex from your phone in about a minute.
 
-GitHub: https://github.com/theaiboi365-hue/Vortex-agent
+GitHub: https://github.com/theaiboi365-hue/Vortex
 
 ## Social Posts
 
@@ -57,7 +57,7 @@ I made Vortex: run Codex from Telegram and Slack with one PowerShell command.
 
 Windows installer, local setup UI, Slack + Telegram tokens, and switchable AI brains for Codex, Claude, OpenAI-compatible APIs, and Ollama.
 
-GitHub: https://github.com/theaiboi365-hue/Vortex-agent
+GitHub: https://github.com/theaiboi365-hue/Vortex
 
 SEO hook: Codex from your phone in 60 seconds.
 
@@ -73,7 +73,7 @@ It installs with one PowerShell command, opens a local dashboard, and lets you c
 
 The main use case is simple: Telegram for phone control, Slack for team channels, and one local dashboard for setup.
 
-GitHub: https://github.com/theaiboi365-hue/Vortex-agent
+GitHub: https://github.com/theaiboi365-hue/Vortex
 
 ### Product Hunt
 

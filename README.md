@@ -1,6 +1,6 @@
 # Vortex
 
-![Vortex logo](assets/vortex-agent-logo.svg)
+![Vortex logo](assets/vortex-logo.svg)
 
 [![Windows setup](https://img.shields.io/badge/Windows-one--command_setup-70e39f?style=for-the-badge&logo=windows)](INSTALL-WINDOWS.md)
 [![Slack](https://img.shields.io/badge/Slack-Socket_Mode-6bd8ff?style=for-the-badge&logo=slack)](#slack-setup)
@@ -14,7 +14,7 @@ Vortex turns a Windows laptop into a personal AI command center: Telegram for ph
 Default behavior: Codex is the brain for everything. Users can still change the brain globally, or choose a different AI for Slack, Telegram, or later functions.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex-agent/main/scripts/setup-windows.ps1 | iex"
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
 ## Why This Exists
@@ -80,7 +80,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 Open PowerShell and run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex-agent/main/scripts/setup-windows.ps1 | iex"
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
 This downloads the repo, installs dependencies, enables startup automation, creates a desktop launcher, starts the bot, and opens:
@@ -94,8 +94,8 @@ http://127.0.0.1:8787
 For developers who prefer terminal setup:
 
 ```powershell
-git clone https://github.com/theaiboi365-hue/Vortex-agent.git
-cd Vortex-agent
+git clone https://github.com/theaiboi365-hue/Vortex.git
+cd Vortex
 npm.cmd install
 Copy-Item .env.example .env
 npm.cmd start
@@ -110,8 +110,8 @@ http://127.0.0.1:8787
 ### Git Clone
 
 ```powershell
-git clone https://github.com/theaiboi365-hue/Vortex-agent.git
-cd Vortex-agent
+git clone https://github.com/theaiboi365-hue/Vortex.git
+cd Vortex
 powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
 npm.cmd start
 ```

@@ -9,7 +9,7 @@ Run Codex from Telegram and Slack with one PowerShell command.
 ## Install
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex-agent/main/scripts/setup-windows.ps1 | iex"
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
 ## Highlights
@@ -24,6 +24,6 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 
 ## Links
 
-- GitHub: https://github.com/theaiboi365-hue/Vortex-agent
-- Windows setup: https://github.com/theaiboi365-hue/Vortex-agent/blob/main/INSTALL-WINDOWS.md
-- Press kit: https://github.com/theaiboi365-hue/Vortex-agent/blob/main/docs/PRESS-KIT.md
+- GitHub: https://github.com/theaiboi365-hue/Vortex
+- Windows setup: https://github.com/theaiboi365-hue/Vortex/blob/main/INSTALL-WINDOWS.md
+- Press kit: https://github.com/theaiboi365-hue/Vortex/blob/main/docs/PRESS-KIT.md

@@ -1,6 +1,6 @@
 services:
   - type: worker
-    name: vortex-agent
+    name: vortex
     env: node
     plan: starter
     buildCommand: npm install
