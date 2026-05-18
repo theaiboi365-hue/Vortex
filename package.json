@@ -1,16 +1,17 @@
 {
-  "name": "claude-social-bridge",
+  "name": "codex-social-bridge",
   "version": "1.0.0",
-  "description": "OpenClaw-style control UI for a ready-to-use Claude bot on Slack and Telegram.",
+  "description": "Codex-first Slack and Telegram bot with per-function AI brain routing.",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "ui": "node src/index.js",
-    "check": "node --check src/index.js && node --check src/claude.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js && node --check src/dashboard.js"
+    "check": "node --check src/index.js && node --check src/brain.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js && node --check src/dashboard.js"
   },
   "keywords": [
+    "codex",
     "claude",
     "slack-bot",
     "telegram-bot",
@@ -19,7 +20,8 @@
     "socket-mode",
     "one-click",
     "dashboard",
-    "openclaw-style"
+    "openclaw-style",
+    "ai-router"
   ],
   "author": "",
   "license": "MIT",

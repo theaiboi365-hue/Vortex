@@ -1,5 +1,5 @@
 import { App } from "@slack/bolt";
-import { askClaude } from "./claude.js";
+import { askBrain } from "./brain.js";
 import { config } from "./config.js";
 import { appendHistory, clearHistory, getHistory } from "./store.js";
 import { allowed, cleanText, shouldIgnoreBotMessage } from "./guards.js";
@@ -36,7 +36,7 @@ export function startSlack() {
 
     try {
       const history = await getHistory(key);
-      const answer = await askClaude({ history, text, source: "Slack" });
+      const answer = await askBrain({ history, text, source: "Slack" });
       await appendHistory(
         key,
         [
@@ -47,7 +47,7 @@ export function startSlack() {
       );
 
       await say({
-        text: answer || "I got an empty answer from Claude. Try again.",
+        text: answer || "I got an empty answer from the selected AI brain. Try again.",
         thread_ts: config.replyInThread ? threadTs : undefined
       });
     } catch (error) {

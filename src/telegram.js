@@ -1,4 +1,4 @@
-import { askClaude } from "./claude.js";
+import { askBrain } from "./brain.js";
 import { config } from "./config.js";
 import { appendHistory, clearHistory, getHistory } from "./store.js";
 import { allowed, cleanText } from "./guards.js";
@@ -23,7 +23,7 @@ async function telegram(method, body = {}) {
 async function sendMessage(chatId, text) {
   return telegram("sendMessage", {
     chat_id: chatId,
-    text: text || "I got an empty answer from Claude. Try again."
+    text: text || "I got an empty answer from the selected AI brain. Try again."
   });
 }
 
@@ -45,7 +45,7 @@ async function handleMessage(msg) {
   if (text === "/start") {
     await sendMessage(
       chatId,
-      `Hi, I am ${config.botName}. Send me a message and I will answer with Claude. Use /reset to clear this chat.`
+      `Hi, I am ${config.botName}. Send me a message and I will answer with the selected AI brain. Use /reset to clear this chat.`
     );
     return;
   }
@@ -61,7 +61,7 @@ async function handleMessage(msg) {
   try {
     await sendChatAction(chatId);
     const history = await getHistory(key);
-    const answer = await askClaude({ history, text, source: "Telegram" });
+    const answer = await askBrain({ history, text, source: "Telegram" });
     await appendHistory(
       key,
       [

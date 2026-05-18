@@ -1,41 +1,30 @@
-# Claude Social Bridge
+# Codex Social Bridge
 
-OpenClaw-style control UI for a private Claude bot that works in Slack and Telegram from one repo.
+Codex-first bot repo for Slack and Telegram, with an OpenClaw-style local control UI and per-function AI brain routing.
 
-This is made for people who want a ready-to-use GitHub project: clone it, install it, paste the Telegram and Slack tokens into a local dashboard, and run one assistant across both messaging apps.
+Default behavior: Codex is the brain for everything. Users can still change the brain globally, or choose a different AI for Slack, Telegram, or later functions.
 
 ## What You Get
 
 - Local setup dashboard at `http://127.0.0.1:8787`
+- Codex as the default AI brain
+- Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
+- Optional Anthropic/Claude, OpenAI-compatible, and Ollama brains
 - Telegram token UI with BotFather steps
 - Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
-- One backend for Slack and Telegram
 - Slack threaded replies by default
 - Telegram `/start` and `/reset`
 - Per-thread local memory in `.data/threads.json`
-- Optional Slack channel/user allowlists
-- Optional Telegram user allowlist
 - Windows install and startup scripts
 - Render worker deploy file
 - GitHub Actions syntax check
 - No secrets committed
 
-## Screens
-
-The first screen is the working control center, not a marketing page. It shows token readiness, setup steps, and the exact run commands.
-
-```text
-Claude Social Bridge
-Private agent control center for Slack Socket Mode and Telegram BotFather setup.
-
-[Setup Tokens] [Readiness] [Telegram] [Slack] [Run]
-```
-
 ## Quick Start
 
 ```powershell
-git clone https://github.com/YOUR_NAME/claude-social-bridge.git
-cd claude-social-bridge
+git clone https://github.com/YOUR_NAME/codex-social-bridge.git
+cd codex-social-bridge
 powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
 npm.cmd start
 ```
@@ -46,21 +35,85 @@ Open:
 http://127.0.0.1:8787
 ```
 
-Paste your tokens in the dashboard, save, then restart:
+Keep `AI_PROVIDER=codex`, paste Telegram/Slack tokens, save, then restart:
 
 ```powershell
 npm.cmd start
 ```
 
-## Required Token
+## Brain Routing
 
-Claude replies need:
+Supported providers:
+
+```env
+AI_PROVIDER=codex
+SLACK_AI_PROVIDER=
+TELEGRAM_AI_PROVIDER=
+```
+
+Examples:
+
+```env
+# Codex handles everything
+AI_PROVIDER=codex
+
+# Codex handles default work, Telegram uses local Ollama
+AI_PROVIDER=codex
+TELEGRAM_AI_PROVIDER=ollama
+
+# Slack uses Claude, Telegram uses Codex
+SLACK_AI_PROVIDER=anthropic
+TELEGRAM_AI_PROVIDER=codex
+```
+
+Supported provider names:
+
+```text
+codex
+anthropic
+claude
+openai
+openai-compatible
+ollama
+local
+```
+
+## Codex Brain
+
+Codex is the default and uses the local Codex CLI:
+
+```env
+AI_PROVIDER=codex
+CODEX_COMMAND=codex
+CODEX_MODEL=
+CODEX_EXTRA_ARGS=
+```
+
+The machine running the bot must have Codex installed and logged in. `CODEX_MODEL` is optional.
+
+## Other Brains
+
+Anthropic/Claude:
 
 ```env
 ANTHROPIC_API_KEY=sk-ant-...
+CLAUDE_MODEL=claude-3-5-sonnet-latest
 ```
 
-Without it, the dashboard still opens and Slack/Telegram can start, but AI replies will ask you to add the key.
+OpenAI-compatible:
+
+```env
+OPENAI_API_KEY=sk-...
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+Ollama:
+
+```env
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=gemma3:270m
+```
 
 ## Telegram Setup
 
@@ -106,39 +159,25 @@ SLACK_ALLOWED_USER_IDS=U123456,U999999
 reset chat  Clear Slack thread memory
 ```
 
-Slack replies stay in the current thread when:
-
-```env
-REPLY_IN_THREAD=true
-```
-
-## Run on Laptop Startup
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\make-startup-shortcut.ps1
-```
-
-That creates a Windows Startup shortcut so the bot launches when you sign in.
-
-## Deploy on Render
-
-1. Push this repo to GitHub.
-2. Create a Render Blueprint from the repo.
-3. Add the environment variables in Render.
-4. Start the worker.
-
-The included `render.yaml` is for a background worker, not a public website.
-
 ## Environment
 
-Copy `.env.example` to `.env` or let the installer do it:
-
 ```env
-ANTHROPIC_API_KEY=sk-ant-...
+AI_PROVIDER=codex
+SLACK_AI_PROVIDER=
+TELEGRAM_AI_PROVIDER=
+CODEX_COMMAND=codex
+CODEX_MODEL=
+CODEX_EXTRA_ARGS=
+ANTHROPIC_API_KEY=
 CLAUDE_MODEL=claude-3-5-sonnet-latest
+OPENAI_API_KEY=
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4.1-mini
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=gemma3:270m
 DASHBOARD_PORT=8787
-BOT_NAME=Claude Social Bridge
-SYSTEM_PROMPT=You are a concise, useful AI assistant inside Slack and Telegram.
+BOT_NAME=Codex Social Bridge
+SYSTEM_PROMPT=You are Codex, a concise, useful AI assistant inside Slack and Telegram.
 MAX_HISTORY_MESSAGES=12
 REPLY_IN_THREAD=true
 SLACK_BOT_TOKEN=xoxb-...
@@ -148,6 +187,12 @@ SLACK_ALLOWED_CHANNEL_IDS=
 SLACK_ALLOWED_USER_IDS=
 TELEGRAM_BOT_TOKEN=123456:abc...
 TELEGRAM_ALLOWED_USER_IDS=
+```
+
+## Run on Laptop Startup
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\make-startup-shortcut.ps1
 ```
 
 ## Security

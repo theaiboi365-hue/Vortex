@@ -27,7 +27,11 @@ function parseEnv(raw) {
 
 function serializeEnv(values) {
   const groups = [
-    ["# Required: Claude / Anthropic", "ANTHROPIC_API_KEY", "CLAUDE_MODEL"],
+    ["# AI brain routing", "AI_PROVIDER", "SLACK_AI_PROVIDER", "TELEGRAM_AI_PROVIDER"],
+    ["# Codex brain", "CODEX_COMMAND", "CODEX_MODEL", "CODEX_EXTRA_ARGS"],
+    ["# Anthropic / Claude brain", "ANTHROPIC_API_KEY", "CLAUDE_MODEL"],
+    ["# OpenAI-compatible brain", "OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_MODEL"],
+    ["# Ollama local brain", "OLLAMA_BASE_URL", "OLLAMA_MODEL"],
     ["# Local dashboard", "DASHBOARD_PORT"],
     ["# Optional behavior", "BOT_NAME", "SYSTEM_PROMPT", "MAX_HISTORY_MESSAGES", "REPLY_IN_THREAD"],
     ["# Slack Socket Mode", "SLACK_BOT_TOKEN", "SLACK_APP_TOKEN", "SLACK_SIGNING_SECRET", "SLACK_ALLOWED_CHANNEL_IDS", "SLACK_ALLOWED_USER_IDS"],
@@ -58,15 +62,27 @@ async function writeEnv(nextValues) {
 }
 
 function statusFrom(values) {
+  const provider = values.AI_PROVIDER || config.brain.defaultProvider;
+  const slackProvider = values.SLACK_AI_PROVIDER || config.brain.slackProvider || provider;
+  const telegramProvider = values.TELEGRAM_AI_PROVIDER || config.brain.telegramProvider || provider;
   return {
     name: values.BOT_NAME || config.botName,
     port: Number(values.DASHBOARD_PORT || config.dashboardPort),
-    claude: has(values.ANTHROPIC_API_KEY || config.anthropicApiKey),
+    brain: {
+      provider,
+      slackProvider,
+      telegramProvider,
+      codex: has(values.CODEX_COMMAND || config.brain.codexCommand),
+      anthropic: has(values.ANTHROPIC_API_KEY || config.anthropicApiKey),
+      openai: has(values.OPENAI_API_KEY || config.brain.openaiApiKey),
+      ollama: has(values.OLLAMA_BASE_URL || config.brain.ollamaBaseUrl)
+    },
     slack: has(values.SLACK_BOT_TOKEN || config.slack.botToken) && has(values.SLACK_APP_TOKEN || config.slack.appToken),
     telegram: has(values.TELEGRAM_BOT_TOKEN || config.telegram.botToken),
     envPath,
     masked: {
       ANTHROPIC_API_KEY: mask(values.ANTHROPIC_API_KEY || config.anthropicApiKey),
+      OPENAI_API_KEY: mask(values.OPENAI_API_KEY || config.brain.openaiApiKey),
       SLACK_BOT_TOKEN: mask(values.SLACK_BOT_TOKEN || config.slack.botToken),
       SLACK_APP_TOKEN: mask(values.SLACK_APP_TOKEN || config.slack.appToken),
       TELEGRAM_BOT_TOKEN: mask(values.TELEGRAM_BOT_TOKEN || config.telegram.botToken)
@@ -92,7 +108,7 @@ function page() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Claude Social Bridge</title>
+  <title>Codex Social Bridge</title>
   <style>
     :root {
       color-scheme: dark;
@@ -174,8 +190,8 @@ function page() {
   <main>
     <section class="top">
       <div>
-        <h1>Claude Social Bridge</h1>
-        <p>Private agent control center for Slack Socket Mode and Telegram BotFather setup. Add tokens, check readiness, then run one bot across both chat surfaces.</p>
+        <h1>Codex Social Bridge</h1>
+        <p>Codex-first control center for Slack and Telegram. Keep Codex as the main brain, or route each function to Anthropic, OpenAI-compatible APIs, or Ollama.</p>
       </div>
       <div class="pill">Local UI: <strong id="port">8787</strong></div>
     </section>
@@ -185,9 +201,20 @@ function page() {
         <h2>Setup Tokens</h2>
         <div class="body">
           <form id="setupForm" class="form-grid">
-            <div><label>Bot name</label><input name="BOT_NAME" placeholder="Claude Social Bridge" /></div>
+            <div><label>Bot name</label><input name="BOT_NAME" placeholder="Codex Social Bridge" /></div>
+            <div><label>Default AI brain</label><input name="AI_PROVIDER" placeholder="codex" /></div>
+            <div><label>Slack AI brain</label><input name="SLACK_AI_PROVIDER" placeholder="blank = default" /></div>
+            <div><label>Telegram AI brain</label><input name="TELEGRAM_AI_PROVIDER" placeholder="blank = default" /></div>
+            <div><label>Codex command</label><input name="CODEX_COMMAND" placeholder="codex" /></div>
+            <div><label>Codex model</label><input name="CODEX_MODEL" placeholder="optional" /></div>
+            <div class="wide"><label>Codex extra args</label><input name="CODEX_EXTRA_ARGS" placeholder="optional comma-separated args" /></div>
             <div><label>Claude model</label><input name="CLAUDE_MODEL" placeholder="claude-3-5-sonnet-latest" /></div>
-            <div class="wide"><label>Anthropic API key</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" placeholder="sk-ant-..." /></div>
+            <div><label>Anthropic API key</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" placeholder="sk-ant-..." /></div>
+            <div><label>OpenAI API key</label><input name="OPENAI_API_KEY" type="password" autocomplete="off" placeholder="sk-..." /></div>
+            <div><label>OpenAI base URL</label><input name="OPENAI_BASE_URL" placeholder="https://api.openai.com/v1" /></div>
+            <div><label>OpenAI model</label><input name="OPENAI_MODEL" placeholder="gpt-4.1-mini" /></div>
+            <div><label>Ollama base URL</label><input name="OLLAMA_BASE_URL" placeholder="http://127.0.0.1:11434" /></div>
+            <div><label>Ollama model</label><input name="OLLAMA_MODEL" placeholder="gemma3:270m" /></div>
             <div><label>Slack bot token</label><input name="SLACK_BOT_TOKEN" type="password" autocomplete="off" placeholder="xoxb-..." /></div>
             <div><label>Slack app token</label><input name="SLACK_APP_TOKEN" type="password" autocomplete="off" placeholder="xapp-..." /></div>
             <div><label>Slack signing secret</label><input name="SLACK_SIGNING_SECRET" type="password" autocomplete="off" /></div>
@@ -196,7 +223,7 @@ function page() {
             <div><label>Allowed Telegram users</label><input name="TELEGRAM_ALLOWED_USER_IDS" placeholder="123456789" /></div>
             <div><label>Thread memory</label><input name="MAX_HISTORY_MESSAGES" placeholder="12" /></div>
             <div><label>Dashboard port</label><input name="DASHBOARD_PORT" placeholder="8787" /></div>
-            <div class="wide"><label>System prompt</label><textarea name="SYSTEM_PROMPT" placeholder="You are a concise, useful AI assistant inside Slack and Telegram."></textarea></div>
+            <div class="wide"><label>System prompt</label><textarea name="SYSTEM_PROMPT" placeholder="You are Codex, a concise, useful AI assistant inside Slack and Telegram."></textarea></div>
           </form>
           <div class="actions">
             <button form="setupForm" type="submit">Save .env</button>
@@ -210,18 +237,26 @@ function page() {
         <h2>Readiness</h2>
         <div class="body">
           <div class="status">
-            <div class="tile" id="claude"><strong><span class="dot"></span>Claude</strong><p id="claudeText">Checking...</p></div>
+            <div class="tile" id="brain"><strong><span class="dot"></span>AI Brain</strong><p id="brainText">Checking...</p></div>
             <div class="tile" id="slack"><strong><span class="dot"></span>Slack</strong><p id="slackText">Checking...</p></div>
             <div class="tile" id="telegram"><strong><span class="dot"></span>Telegram</strong><p id="telegramText">Checking...</p></div>
           </div>
 
           <div class="tabs actions">
-            <button class="tab active" data-tab="telegramGuide" type="button">Telegram</button>
+            <button class="tab active" data-tab="brainGuide" type="button">Brains</button>
+            <button class="tab" data-tab="telegramGuide" type="button">Telegram</button>
             <button class="tab" data-tab="slackGuide" type="button">Slack</button>
             <button class="tab" data-tab="runGuide" type="button">Run</button>
           </div>
 
-          <div id="telegramGuide">
+          <div id="brainGuide">
+            <ol>
+              <li>Use <code>codex</code> as the default brain for all functions.</li>
+              <li>Set <code>SLACK_AI_PROVIDER</code> or <code>TELEGRAM_AI_PROVIDER</code> to override only that surface.</li>
+              <li>Supported values: <code>codex</code>, <code>anthropic</code>, <code>openai</code>, <code>ollama</code>.</li>
+            </ol>
+          </div>
+          <div id="telegramGuide" class="hidden">
             <ol>
               <li>Open Telegram and search <code>@BotFather</code>.</li>
               <li>Send <code>/newbot</code>, choose a name and username.</li>
@@ -238,7 +273,7 @@ function page() {
           <div id="runGuide" class="hidden">
             <pre>npm.cmd install
 npm.cmd start</pre>
-            <p>After saving tokens, restart the process so Slack and Telegram reload the new <code>.env</code> values.</p>
+            <p>After saving tokens or brain routing, restart the process so Slack and Telegram reload the new <code>.env</code> values.</p>
           </div>
         </div>
       </aside>
@@ -264,7 +299,7 @@ npm.cmd start</pre>
     async function load() {
       const data = await api("/api/status");
       document.querySelector("#port").textContent = data.port;
-      setTile("claude", data.claude, data.claude ? "API key saved" : "Add ANTHROPIC_API_KEY");
+      setTile("brain", true, "Default: " + data.brain.provider + " | Slack: " + data.brain.slackProvider + " | Telegram: " + data.brain.telegramProvider);
       setTile("slack", data.slack, data.slack ? "Socket Mode tokens saved" : "Add xoxb + xapp tokens");
       setTile("telegram", data.telegram, data.telegram ? "BotFather token saved" : "Add TELEGRAM_BOT_TOKEN");
       const values = await api("/api/env");
@@ -287,7 +322,7 @@ npm.cmd start</pre>
     document.querySelectorAll(".tab").forEach((button) => {
       button.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
-        document.querySelectorAll("#telegramGuide,#slackGuide,#runGuide").forEach((panel) => panel.classList.add("hidden"));
+        document.querySelectorAll("#brainGuide,#telegramGuide,#slackGuide,#runGuide").forEach((panel) => panel.classList.add("hidden"));
         button.classList.add("active");
         document.querySelector("#" + button.dataset.tab).classList.remove("hidden");
       });

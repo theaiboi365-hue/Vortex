@@ -1,12 +1,24 @@
 services:
   - type: worker
-    name: claude-social-bridge
+    name: codex-social-bridge
     env: node
     plan: starter
     buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AI_PROVIDER
+        value: codex
+      - key: SLACK_AI_PROVIDER
+        sync: false
+      - key: TELEGRAM_AI_PROVIDER
+        sync: false
+      - key: CODEX_COMMAND
+        value: codex
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OLLAMA_BASE_URL
         sync: false
       - key: SLACK_BOT_TOKEN
         sync: false

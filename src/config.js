@@ -21,13 +21,26 @@ function number(name, fallback) {
 export const config = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || "",
   claudeModel: process.env.CLAUDE_MODEL || "claude-3-5-sonnet-latest",
-  botName: process.env.BOT_NAME || "Claude Social Bridge",
+  botName: process.env.BOT_NAME || "Codex Social Bridge",
   systemPrompt:
     process.env.SYSTEM_PROMPT ||
-    "You are a concise, useful AI assistant inside Slack and Telegram.",
+    "You are Codex, a concise, useful AI assistant inside Slack and Telegram.",
   maxHistoryMessages: Number(process.env.MAX_HISTORY_MESSAGES || 12),
   dashboardPort: number("DASHBOARD_PORT", 8787),
   replyInThread: bool("REPLY_IN_THREAD", true),
+  brain: {
+    defaultProvider: process.env.AI_PROVIDER || "codex",
+    slackProvider: process.env.SLACK_AI_PROVIDER || "",
+    telegramProvider: process.env.TELEGRAM_AI_PROVIDER || "",
+    codexCommand: process.env.CODEX_COMMAND || "codex",
+    codexModel: process.env.CODEX_MODEL || "",
+    codexExtraArgs: list("CODEX_EXTRA_ARGS"),
+    openaiApiKey: process.env.OPENAI_API_KEY || "",
+    openaiBaseUrl: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
+    openaiModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+    ollamaBaseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434",
+    ollamaModel: process.env.OLLAMA_MODEL || "gemma3:270m"
+  },
   slack: {
     botToken: process.env.SLACK_BOT_TOKEN || "",
     appToken: process.env.SLACK_APP_TOKEN || "",
@@ -42,10 +55,21 @@ export const config = {
 };
 
 export function assertBaseConfig() {
-  if (!config.anthropicApiKey) console.warn("Claude disabled: set ANTHROPIC_API_KEY to enable AI replies.");
+  console.log(`Default AI brain: ${config.brain.defaultProvider}`);
 }
 
 export const envFields = [
+  "AI_PROVIDER",
+  "SLACK_AI_PROVIDER",
+  "TELEGRAM_AI_PROVIDER",
+  "CODEX_COMMAND",
+  "CODEX_MODEL",
+  "CODEX_EXTRA_ARGS",
+  "OPENAI_API_KEY",
+  "OPENAI_BASE_URL",
+  "OPENAI_MODEL",
+  "OLLAMA_BASE_URL",
+  "OLLAMA_MODEL",
   "ANTHROPIC_API_KEY",
   "CLAUDE_MODEL",
   "BOT_NAME",
