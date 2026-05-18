@@ -176,7 +176,9 @@ function page() {
     code, pre { font-family: "Cascadia Code", Consolas, monospace; }
     pre { overflow: auto; background: #080b0e; border: 1px solid var(--line); border-radius: 8px; padding: 12px; color: #cce8d6; }
     .run-command { margin-top: 14px; }
-    .run-command pre { margin: 8px 0 0; white-space: pre-wrap; }
+    .code-box { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: stretch; margin-top: 8px; }
+    .code-box pre { margin: 0; white-space: pre-wrap; min-height: 100%; }
+    .copy-button { min-width: 82px; color: var(--text); background: #202832; border: 1px solid var(--line); }
     ol { color: var(--muted); padding-left: 20px; line-height: 1.65; }
     .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
     .tab { color: var(--text); background: #202832; border: 1px solid var(--line); }
@@ -291,8 +293,11 @@ function page() {
           </div>
           <div class="run-command">
             <label>Run Vortex locally</label>
-            <pre>cd "${process.cwd()}"
+            <div class="code-box">
+              <pre id="runCommand">cd "${process.cwd()}"
 npm.cmd start</pre>
+              <button class="copy-button" id="copyRunCommand" type="button">Copy</button>
+            </div>
           </div>
           <div class="notice" id="notice"></div>
         </div>
@@ -390,6 +395,19 @@ npm.cmd start</pre>
     });
 
     document.querySelector("#refresh").addEventListener("click", load);
+    document.querySelector("#copyRunCommand").addEventListener("click", async () => {
+      const button = document.querySelector("#copyRunCommand");
+      const command = document.querySelector("#runCommand").textContent;
+      try {
+        await navigator.clipboard.writeText(command);
+        button.textContent = "Copied";
+        setTimeout(() => {
+          button.textContent = "Copy";
+        }, 1400);
+      } catch {
+        notice.textContent = "Select the run command and copy it manually.";
+      }
+    });
     document.querySelectorAll(".tab").forEach((button) => {
       button.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
