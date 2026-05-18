@@ -12,7 +12,7 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 
 Voiceover:
 
-> This installs Codex Social Bridge and opens a local setup dashboard.
+> This installs Vortex Relay and opens a local setup dashboard.
 
 ### Shot 2: Setup UI
 

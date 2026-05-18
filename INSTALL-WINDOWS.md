@@ -1,6 +1,6 @@
 # Windows One-Click Setup
 
-Codex Social Bridge can be installed from GitHub with one PowerShell command.
+Vortex Relay can be installed from GitHub with one PowerShell command.
 
 ## Install
 
@@ -13,7 +13,7 @@ powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.c
 The installer will:
 
 - Download the latest GitHub repo zip
-- Install it to `%LOCALAPPDATA%\CodexSocialBridge\app`
+- Install it to `%LOCALAPPDATA%\VortexRelay\app`
 - Run `npm.cmd install`
 - Create `.env` from `.env.example`
 - Enable startup automation
@@ -34,13 +34,13 @@ In the setup UI:
 ## Run Manually
 
 ```powershell
-cd "$env:LOCALAPPDATA\CodexSocialBridge\app"
+cd "$env:LOCALAPPDATA\VortexRelay\app"
 powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
 ```
 
 ## Enable Startup Again
 
 ```powershell
-cd "$env:LOCALAPPDATA\CodexSocialBridge\app"
+cd "$env:LOCALAPPDATA\VortexRelay\app"
 powershell -ExecutionPolicy Bypass -File .\scripts\make-startup-shortcut.ps1
 ```

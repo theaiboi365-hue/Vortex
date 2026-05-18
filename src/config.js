@@ -21,7 +21,7 @@ function number(name, fallback) {
 export const config = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || "",
   claudeModel: process.env.CLAUDE_MODEL || "claude-3-5-sonnet-latest",
-  botName: process.env.BOT_NAME || "Codex Social Bridge",
+  botName: process.env.BOT_NAME || "Vortex Relay",
   systemPrompt:
     process.env.SYSTEM_PROMPT ||
     "You are Codex, a concise, useful AI assistant inside Slack and Telegram.",

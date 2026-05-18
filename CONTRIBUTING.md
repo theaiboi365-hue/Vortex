@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Codex Social Bridge.
+Thanks for helping improve Vortex Relay.
 
 ## Good First Contributions
 

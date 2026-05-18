@@ -5,7 +5,7 @@ Use this only on a relevant article talk page after independent reliable sources
 ```text
 {{edit request}}
 
-I have a conflict of interest because I am connected to the Codex Social Bridge project, so I am requesting review instead of editing the article directly.
+I have a conflict of interest because I am connected to the Vortex Relay project, so I am requesting review instead of editing the article directly.
 
 Suggested neutral addition:
 
@@ -19,13 +19,13 @@ Reliable sources:
 
 Reason:
 
-The sources discuss Codex Social Bridge in the context of [article topic]. The proposed text is neutral, brief, and does not use promotional language.
+The sources discuss Vortex Relay in the context of [article topic]. The proposed text is neutral, brief, and does not use promotional language.
 ```
 
 ## Example Shape
 
 ```text
-Codex Social Bridge is an open-source project that connects Codex-based workflows to Telegram and Slack through a local configuration dashboard.
+Vortex Relay is an open-source project that connects Codex-based workflows to Telegram and Slack through a local configuration dashboard.
 ```
 
 Do not use this example unless independent sources support it.

@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $startup = [Environment]::GetFolderPath("Startup")
-$shortcutPath = Join-Path $startup "Codex Social Bridge.lnk"
+$shortcutPath = Join-Path $startup "Vortex Relay.lnk"
 $target = "powershell.exe"
 $args = "-ExecutionPolicy Bypass -File `"$projectRoot\scripts\start-hidden.ps1`""
 

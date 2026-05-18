@@ -1,6 +1,6 @@
-# Codex Social Bridge v1.0.0
+# Vortex Relay v1.0.0
 
-Codex Social Bridge is ready for its first public release.
+Vortex Relay is ready for its first public release.
 
 ## Main Hook
 

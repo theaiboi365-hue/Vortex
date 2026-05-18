@@ -2,13 +2,13 @@
 
 This page is intentionally factual and restrained. It is not meant to attack or impersonate any other project.
 
-## Codex Social Bridge In One Sentence
+## Vortex Relay In One Sentence
 
-Codex Social Bridge is a Windows-first Slack and Telegram bridge that uses Codex by default and lets users route specific functions to other AI providers.
+Vortex Relay is a Windows-first Slack and Telegram bridge that uses Codex by default and lets users route specific functions to other AI providers.
 
 ## Comparison Table
 
-| Category | Codex Social Bridge |
+| Category | Vortex Relay |
 | --- | --- |
 | Primary use case | Use Codex from Telegram and Slack |
 | Install style | One PowerShell command on Windows |
@@ -22,13 +22,13 @@ Codex Social Bridge is a Windows-first Slack and Telegram bridge that uses Codex
 
 ## OpenClaw-Style Projects
 
-OpenClaw-style projects usually emphasize a broader agent workspace and polished UI. Codex Social Bridge is narrower: it focuses on getting Codex into Telegram and Slack quickly, with minimal setup and a local configuration dashboard.
+OpenClaw-style projects usually emphasize a broader agent workspace and polished UI. Vortex Relay is narrower: it focuses on getting Codex into Telegram and Slack quickly, with minimal setup and a local configuration dashboard.
 
 ## Hermes-Style Projects
 
-Hermes-style projects usually emphasize messaging-agent workflows. Codex Social Bridge uses a similar messaging-first idea, but focuses on Windows setup, Codex as the default brain, and per-function provider routing.
+Hermes-style projects usually emphasize messaging-agent workflows. Vortex Relay uses a similar messaging-first idea, but focuses on Windows setup, Codex as the default brain, and per-function provider routing.
 
-## When To Use Codex Social Bridge
+## When To Use Vortex Relay
 
 - You want Codex from a phone through Telegram.
 - You want Codex in a Slack channel.

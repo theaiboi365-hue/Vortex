@@ -108,7 +108,7 @@ function page() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Codex Social Bridge</title>
+  <title>Vortex Relay</title>
   <style>
     :root {
       color-scheme: dark;
@@ -190,7 +190,7 @@ function page() {
   <main>
     <section class="top">
       <div>
-        <h1>Codex Social Bridge</h1>
+        <h1>Vortex Relay</h1>
         <p>Codex-first control center for Slack and Telegram. Keep Codex as the main brain, or route each function to Anthropic, OpenAI-compatible APIs, or Ollama.</p>
       </div>
       <div class="pill">Local UI: <strong id="port">8787</strong></div>
@@ -201,7 +201,7 @@ function page() {
         <h2>Setup Tokens</h2>
         <div class="body">
           <form id="setupForm" class="form-grid">
-            <div><label>Bot name</label><input name="BOT_NAME" placeholder="Codex Social Bridge" /></div>
+            <div><label>Bot name</label><input name="BOT_NAME" placeholder="Vortex Relay" /></div>
             <div><label>Default AI brain</label><input name="AI_PROVIDER" placeholder="codex" /></div>
             <div><label>Slack AI brain</label><input name="SLACK_AI_PROVIDER" placeholder="blank = default" /></div>
             <div><label>Telegram AI brain</label><input name="TELEGRAM_AI_PROVIDER" placeholder="blank = default" /></div>
