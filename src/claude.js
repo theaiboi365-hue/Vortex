@@ -4,6 +4,10 @@ import { config } from "./config.js";
 const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
 
 export async function askClaude({ history, text, source }) {
+  if (!config.anthropicApiKey) {
+    return "Claude is not configured yet. Open the setup dashboard and add ANTHROPIC_API_KEY.";
+  }
+
   const messages = [
     ...history,
     {

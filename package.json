@@ -1,13 +1,14 @@
 {
   "name": "claude-social-bridge",
   "version": "1.0.0",
-  "description": "One-click Slack + Telegram bot powered by Claude, with threaded replies, owner controls, and deploy-ready setup.",
+  "description": "OpenClaw-style control UI for a ready-to-use Claude bot on Slack and Telegram.",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "check": "node --check src/index.js && node --check src/claude.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js"
+    "ui": "node src/index.js",
+    "check": "node --check src/index.js && node --check src/claude.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js && node --check src/dashboard.js"
   },
   "keywords": [
     "claude",
@@ -16,7 +17,9 @@
     "anthropic",
     "ai-agent",
     "socket-mode",
-    "one-click"
+    "one-click",
+    "dashboard",
+    "openclaw-style"
   ],
   "author": "",
   "license": "MIT",

@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 Write-Host ""
 Write-Host "Claude Social Bridge installer" -ForegroundColor Cyan
-Write-Host "This installs dependencies and prepares your .env file." -ForegroundColor Gray
+Write-Host "This installs dependencies, prepares .env, and gives you the setup UI." -ForegroundColor Gray
 Write-Host ""
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
@@ -25,12 +25,12 @@ try {
   npm.cmd install
 
   Write-Host ""
-  Write-Host "Installed. Now open .env and add:" -ForegroundColor Green
-  Write-Host "1. ANTHROPIC_API_KEY"
-  Write-Host "2. SLACK_BOT_TOKEN + SLACK_APP_TOKEN for Slack"
-  Write-Host "3. TELEGRAM_BOT_TOKEN from BotFather for Telegram"
+  Write-Host "Installed. Start the bot and open the setup dashboard:" -ForegroundColor Green
+  Write-Host "1. .\scripts\start.ps1"
+  Write-Host "2. http://127.0.0.1:8787"
+  Write-Host "3. Paste ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, SLACK_BOT_TOKEN, and SLACK_APP_TOKEN"
   Write-Host ""
-  Write-Host "Then run: .\scripts\start.ps1" -ForegroundColor Cyan
+  Write-Host "Restart after saving tokens so the bot reloads .env." -ForegroundColor Cyan
 }
 finally {
   Pop-Location
