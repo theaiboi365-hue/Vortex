@@ -18,14 +18,31 @@ Default behavior: Codex is the brain for everything. Users can still change the 
 - Telegram `/start` and `/reset`
 - Per-thread local memory in `.data/threads.json`
 - Windows install and startup scripts
+- One-command Windows download installer
 - Render worker deploy file
 - GitHub Actions syntax check
 - No secrets committed
 
 ## Quick Start
 
+### Windows Download Installer
+
+Open PowerShell and run:
+
 ```powershell
-git clone https://github.com/YOUR_NAME/codex-social-bridge.git
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/codex-social-bridge/main/scripts/setup-windows.ps1 | iex"
+```
+
+This downloads the repo, installs dependencies, enables startup automation, creates a desktop launcher, starts the bot, and opens:
+
+```text
+http://127.0.0.1:8787
+```
+
+### Git Clone
+
+```powershell
+git clone https://github.com/theaiboi365-hue/codex-social-bridge.git
 cd codex-social-bridge
 powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
 npm.cmd start
@@ -195,6 +212,12 @@ TELEGRAM_ALLOWED_USER_IDS=
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\make-startup-shortcut.ps1
+```
+
+For background start without keeping a PowerShell window open:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start-hidden.ps1
 ```
 
 ## Security
