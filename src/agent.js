@@ -20,14 +20,55 @@ function helpText() {
     "vortex check - run npm.cmd run check",
     "vortex files - list main project files",
     "",
-    "Safety: arbitrary shell commands, deletes, moves, token printing, and system changes are blocked."
+    "Safety: Vortex only acts when you explicitly ask with a vortex command.",
+    "Blocked: banking/payment actions, secrets/tokens, private data leaks, and data-breach requests."
   ].join("\n");
 }
 
-function blockedText() {
+function safetyBlockReason(text) {
+  const clean = text.toLowerCase();
+  const bankingWords = [
+    "bank",
+    "banking",
+    "upi",
+    "payment",
+    "transfer money",
+    "send money",
+    "credit card",
+    "debit card",
+    "card number",
+    "cvv",
+    "netbanking"
+  ];
+  const breachWords = [
+    "password",
+    "token",
+    "secret",
+    "api key",
+    "private key",
+    "cookie",
+    "session",
+    "steal",
+    "leak",
+    "exfiltrate",
+    "dump data",
+    "data breach",
+    "breach"
+  ];
+
+  if (bankingWords.some((word) => clean.includes(word))) {
+    return "Blocked for safety: banking/payment actions are not allowed.";
+  }
+  if (breachWords.some((word) => clean.includes(word))) {
+    return "Blocked for safety: Vortex will not reveal secrets, tokens, passwords, or private data.";
+  }
+  return "";
+}
+
+function unavailableText() {
   return [
-    "Blocked for safety.",
-    "Vortex safe mode only allows approved tools. Try /tools to see what I can do."
+    "That tool is not available yet.",
+    "Try /tools to see the current Vortex tools."
   ].join("\n");
 }
 
@@ -81,5 +122,8 @@ export async function handleAgentCommand({ text }) {
     return runSafe("git", ["ls-files"]);
   }
 
-  return blockedText();
+  const blockReason = safetyBlockReason(text);
+  if (blockReason) return blockReason;
+
+  return unavailableText();
 }

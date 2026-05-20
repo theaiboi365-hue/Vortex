@@ -392,7 +392,8 @@ function page() {
             <ol>
               <li>Use <code>/tools</code> in Slack or Telegram to see safe commands.</li>
               <li>Try <code>vortex status</code>, <code>vortex check</code>, <code>vortex files</code>, or <code>vortex open dashboard</code>.</li>
-              <li>Vortex blocks arbitrary shell commands, deletes, moves, token printing, and system changes.</li>
+              <li>Vortex only acts when the user explicitly asks with a <code>vortex</code> command.</li>
+              <li>Banking/payment actions, secrets, tokens, private data leaks, and data-breach requests are blocked.</li>
             </ol>
           </div>
           <div id="runGuide" class="hidden">

@@ -50,7 +50,8 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - Telegram `/start` and `/reset`
 - Safe OpenClaw-style agent tools with `/tools`
 - Approved commands for status, dashboard open, repo status, file list, and syntax checks
-- Safety blocks for arbitrary shell commands, deletes, moves, token printing, and system changes
+- Explicit-command safety: Vortex only acts when the user asks with a `vortex` command
+- Safety blocks for banking/payment actions, secrets/tokens, private data leaks, and data-breach requests
 - Per-thread local memory in `.data/threads.json`
 - Windows install and startup scripts
 - One-command Windows download installer
