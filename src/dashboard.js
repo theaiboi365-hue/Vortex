@@ -506,6 +506,15 @@ export function startDashboard() {
     }
   });
 
+  server.on("error", (error) => {
+    if (error.code === "EADDRINUSE") {
+      console.error(`Dashboard already running at http://127.0.0.1:${config.dashboardPort}`);
+      console.error("Open that URL, or stop the existing Vortex process before starting again.");
+      return;
+    }
+    throw error;
+  });
+
   server.listen(config.dashboardPort, "127.0.0.1", () => {
     console.log(`Setup dashboard: http://127.0.0.1:${config.dashboardPort}`);
   });
