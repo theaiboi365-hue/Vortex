@@ -246,6 +246,7 @@ SLACK_ALLOWED_USER_IDS=U123456,U999999
 
 ```text
 /start      Telegram welcome message
+/id         Show your Telegram user ID for TELEGRAM_ALLOWED_USER_IDS
 /reset      Clear Telegram chat memory
 reset chat  Clear Slack thread memory
 /tools      Show safe Vortex agent tools

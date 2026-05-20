@@ -37,16 +37,25 @@ async function sendChatAction(chatId) {
 
 async function handleMessage(msg) {
   if (!msg.text) return;
-  if (!allowed(msg.from?.id, config.telegram.allowedUserIds)) return;
 
   const chatId = msg.chat.id;
   const text = cleanText(msg.text);
   const key = `telegram:${chatId}`;
 
+  if (text === "/id") {
+    await sendMessage(chatId, `Your Telegram user ID is ${msg.from?.id}. Put this in TELEGRAM_ALLOWED_USER_IDS.`);
+    return;
+  }
+
+  if (!allowed(msg.from?.id, config.telegram.allowedUserIds)) {
+    console.log(`Telegram ignored unauthorized user ${msg.from?.id || "unknown"}.`);
+    return;
+  }
+
   if (text === "/start") {
     await sendMessage(
       chatId,
-      `Hi, I am ${config.botName}. Send me a message and I will answer with the selected AI brain. Use /reset to clear this chat.`
+      `Hi, I am ${config.botName}. Send me a message and I will answer with the selected AI brain. Use /reset to clear this chat. Use /id to see your Telegram user ID.`
     );
     return;
   }
