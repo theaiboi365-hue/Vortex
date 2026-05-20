@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import { config, envFields } from "./config.js";
 
 const envPath = path.join(process.cwd(), ".env");
@@ -59,6 +60,34 @@ async function writeEnv(nextValues) {
     if (Object.hasOwn(nextValues, key)) values[key] = String(nextValues[key] || "").trim();
   }
   await fs.writeFile(envPath, serializeEnv(values), "utf8");
+}
+
+function runCommandText() {
+  return `cd "${process.cwd()}"\nnpm.cmd start`;
+}
+
+function copyToSystemClipboard(text) {
+  return new Promise((resolve, reject) => {
+    if (process.platform !== "win32") {
+      reject(new Error("System clipboard copy is only available on Windows."));
+      return;
+    }
+    const child = spawn(
+      "powershell.exe",
+      ["-NoProfile", "-Command", "$Input | Set-Clipboard"],
+      { windowsHide: true }
+    );
+    let errorText = "";
+    child.stderr.on("data", (chunk) => {
+      errorText += chunk;
+    });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(errorText || `Clipboard copy failed with exit code ${code}`));
+    });
+    child.stdin.end(text);
+  });
 }
 
 function statusFrom(values) {
@@ -295,8 +324,7 @@ function page() {
             <label>Run Vortex locally</label>
             <p>Paste this in PowerShell, not inside this dashboard.</p>
             <div class="code-box">
-              <pre id="runCommand">cd "${process.cwd()}"
-npm.cmd start</pre>
+              <pre id="runCommand">${runCommandText()}</pre>
               <button class="copy-button" id="copyRunCommand" type="button">Copy</button>
             </div>
           </div>
@@ -398,15 +426,46 @@ npm.cmd start</pre>
     document.querySelector("#refresh").addEventListener("click", load);
     document.querySelector("#copyRunCommand").addEventListener("click", async () => {
       const button = document.querySelector("#copyRunCommand");
-      const command = document.querySelector("#runCommand").textContent;
-      try {
-        await navigator.clipboard.writeText(command);
+      const commandBox = document.querySelector("#runCommand");
+      const command = commandBox.textContent;
+      const markCopied = () => {
         button.textContent = "Copied";
         setTimeout(() => {
           button.textContent = "Copy";
         }, 1400);
+      };
+      try {
+        const response = await fetch("/api/copy-run-command", { method: "POST" });
+        if (response.ok) {
+          markCopied();
+          notice.textContent = "";
+          return;
+        }
+        await navigator.clipboard.writeText(command);
+        markCopied();
       } catch {
-        notice.textContent = "Select the run command and copy it manually.";
+        const copyArea = document.createElement("textarea");
+        copyArea.value = command;
+        copyArea.setAttribute("readonly", "");
+        copyArea.style.position = "fixed";
+        copyArea.style.left = "-9999px";
+        document.body.appendChild(copyArea);
+        copyArea.select();
+        try {
+          if (document.execCommand("copy")) {
+            markCopied();
+            notice.textContent = "";
+            copyArea.remove();
+            return;
+          }
+        } catch {}
+        copyArea.remove();
+        const range = document.createRange();
+        range.selectNodeContents(commandBox);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        notice.textContent = "Run command selected. Press Ctrl+C to copy it.";
       }
     });
     document.querySelectorAll(".tab").forEach((button) => {
@@ -433,6 +492,10 @@ export function startDashboard() {
       if (request.method === "GET" && url.pathname === "/") return send(response, 200, page(), "text/html; charset=utf-8");
       if (request.method === "GET" && url.pathname === "/api/status") return send(response, 200, statusFrom(await readEnv()));
       if (request.method === "GET" && url.pathname === "/api/env") return send(response, 200, await readEnv());
+      if (request.method === "POST" && url.pathname === "/api/copy-run-command") {
+        await copyToSystemClipboard(runCommandText());
+        return send(response, 200, { ok: true });
+      }
       if (request.method === "POST" && url.pathname === "/api/env") {
         await writeEnv(await readJson(request));
         return send(response, 200, { ok: true });
