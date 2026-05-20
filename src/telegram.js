@@ -1,4 +1,5 @@
 import { askBrain } from "./brain.js";
+import { handleAgentCommand } from "./agent.js";
 import { config } from "./config.js";
 import { appendHistory, clearHistory, getHistory } from "./store.js";
 import { allowed, cleanText } from "./guards.js";
@@ -60,6 +61,12 @@ async function handleMessage(msg) {
 
   try {
     await sendChatAction(chatId);
+    const agentAnswer = await handleAgentCommand({ text, source: "Telegram" });
+    if (agentAnswer) {
+      await sendMessage(chatId, agentAnswer);
+      return;
+    }
+
     const history = await getHistory(key);
     const answer = await askBrain({ history, text, source: "Telegram" });
     await appendHistory(

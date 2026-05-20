@@ -1,5 +1,6 @@
 import { App } from "@slack/bolt";
 import { askBrain } from "./brain.js";
+import { handleAgentCommand } from "./agent.js";
 import { config } from "./config.js";
 import { appendHistory, clearHistory, getHistory } from "./store.js";
 import { allowed, cleanText, shouldIgnoreBotMessage } from "./guards.js";
@@ -35,6 +36,15 @@ export function startSlack() {
     }
 
     try {
+      const agentAnswer = await handleAgentCommand({ text, source: "Slack" });
+      if (agentAnswer) {
+        await say({
+          text: agentAnswer,
+          thread_ts: config.replyInThread ? threadTs : undefined
+        });
+        return;
+      }
+
       const history = await getHistory(key);
       const answer = await askBrain({ history, text, source: "Slack" });
       await appendHistory(

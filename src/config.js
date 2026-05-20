@@ -28,6 +28,10 @@ export const config = {
   maxHistoryMessages: Number(process.env.MAX_HISTORY_MESSAGES || 12),
   dashboardPort: number("DASHBOARD_PORT", 8787),
   replyInThread: bool("REPLY_IN_THREAD", true),
+  agent: {
+    enabled: bool("AGENT_TOOLS_ENABLED", true),
+    mode: process.env.AGENT_MODE || "safe"
+  },
   brain: {
     defaultProvider: process.env.AI_PROVIDER || "codex",
     slackProvider: process.env.SLACK_AI_PROVIDER || "",
@@ -76,6 +80,8 @@ export const envFields = [
   "SYSTEM_PROMPT",
   "MAX_HISTORY_MESSAGES",
   "REPLY_IN_THREAD",
+  "AGENT_TOOLS_ENABLED",
+  "AGENT_MODE",
   "DASHBOARD_PORT",
   "SLACK_BOT_TOKEN",
   "SLACK_APP_TOKEN",

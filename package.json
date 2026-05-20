@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "ui": "node src/index.js",
-    "check": "node --check src/index.js && node --check src/brain.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js && node --check src/dashboard.js"
+    "check": "node --check src/index.js && node --check src/agent.js && node --check src/brain.js && node --check src/slack.js && node --check src/telegram.js && node --check src/store.js && node --check src/dashboard.js"
   },
   "keywords": [
     "codex",

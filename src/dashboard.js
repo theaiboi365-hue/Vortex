@@ -34,6 +34,7 @@ function serializeEnv(values) {
     ["# OpenAI-compatible brain", "OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_MODEL"],
     ["# Ollama local brain", "OLLAMA_BASE_URL", "OLLAMA_MODEL"],
     ["# Local dashboard", "DASHBOARD_PORT"],
+    ["# Safe agent tools", "AGENT_TOOLS_ENABLED", "AGENT_MODE"],
     ["# Optional behavior", "BOT_NAME", "SYSTEM_PROMPT", "MAX_HISTORY_MESSAGES", "REPLY_IN_THREAD"],
     ["# Slack Socket Mode", "SLACK_BOT_TOKEN", "SLACK_APP_TOKEN", "SLACK_SIGNING_SECRET", "SLACK_ALLOWED_CHANNEL_IDS", "SLACK_ALLOWED_USER_IDS"],
     ["# Telegram", "TELEGRAM_BOT_TOKEN", "TELEGRAM_ALLOWED_USER_IDS"]
@@ -97,6 +98,10 @@ function statusFrom(values) {
   return {
     name: values.BOT_NAME || config.botName,
     port: Number(values.DASHBOARD_PORT || config.dashboardPort),
+    agent: {
+      enabled: (values.AGENT_TOOLS_ENABLED || String(config.agent.enabled)) !== "false",
+      mode: values.AGENT_MODE || config.agent.mode
+    },
     brain: {
       provider,
       slackProvider,
@@ -314,6 +319,19 @@ function page() {
             <div><label>Allowed Telegram users</label><input name="TELEGRAM_ALLOWED_USER_IDS" placeholder="123456789" /></div>
             <div><label>Thread memory</label><input name="MAX_HISTORY_MESSAGES" placeholder="12" /></div>
             <div><label>Dashboard port</label><input name="DASHBOARD_PORT" placeholder="8787" /></div>
+            <div>
+              <label>Safe agent tools</label>
+              <select name="AGENT_TOOLS_ENABLED">
+                <option value="true">On</option>
+                <option value="false">Off</option>
+              </select>
+            </div>
+            <div>
+              <label>Agent mode</label>
+              <select name="AGENT_MODE">
+                <option value="safe">Safe approved tools only</option>
+              </select>
+            </div>
             <div class="wide"><label>System prompt</label><textarea name="SYSTEM_PROMPT" placeholder="You are Codex, a concise, useful AI assistant inside Slack and Telegram."></textarea></div>
           </form>
           <div class="actions">
@@ -345,6 +363,7 @@ function page() {
             <button class="tab active" data-tab="brainGuide" type="button">Brains</button>
             <button class="tab" data-tab="telegramGuide" type="button">Telegram</button>
             <button class="tab" data-tab="slackGuide" type="button">Slack</button>
+            <button class="tab" data-tab="agentGuide" type="button">Agent</button>
             <button class="tab" data-tab="runGuide" type="button">Run</button>
           </div>
 
@@ -367,6 +386,13 @@ function page() {
               <li>Create a Slack app, enable Socket Mode, and create an app token with <code>connections:write</code>.</li>
               <li>Add bot scopes: <code>chat:write</code>, history scopes, and install to workspace.</li>
               <li>Paste <code>xoxb</code> and <code>xapp</code> tokens above, save, then invite the bot to a channel.</li>
+            </ol>
+          </div>
+          <div id="agentGuide" class="hidden">
+            <ol>
+              <li>Use <code>/tools</code> in Slack or Telegram to see safe commands.</li>
+              <li>Try <code>vortex status</code>, <code>vortex check</code>, <code>vortex files</code>, or <code>vortex open dashboard</code>.</li>
+              <li>Vortex blocks arbitrary shell commands, deletes, moves, token printing, and system changes.</li>
             </ol>
           </div>
           <div id="runGuide" class="hidden">
@@ -471,7 +497,7 @@ npm.cmd start</pre>
     document.querySelectorAll(".tab").forEach((button) => {
       button.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
-        document.querySelectorAll("#brainGuide,#telegramGuide,#slackGuide,#runGuide").forEach((panel) => panel.classList.add("hidden"));
+        document.querySelectorAll("#brainGuide,#telegramGuide,#slackGuide,#agentGuide,#runGuide").forEach((panel) => panel.classList.add("hidden"));
         button.classList.add("active");
         document.querySelector("#" + button.dataset.tab).classList.remove("hidden");
       });

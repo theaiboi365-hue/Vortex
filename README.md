@@ -48,6 +48,9 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
 - Slack threaded replies by default
 - Telegram `/start` and `/reset`
+- Safe OpenClaw-style agent tools with `/tools`
+- Approved commands for status, dashboard open, repo status, file list, and syntax checks
+- Safety blocks for arbitrary shell commands, deletes, moves, token printing, and system changes
 - Per-thread local memory in `.data/threads.json`
 - Windows install and startup scripts
 - One-command Windows download installer
@@ -244,6 +247,12 @@ SLACK_ALLOWED_USER_IDS=U123456,U999999
 /start      Telegram welcome message
 /reset      Clear Telegram chat memory
 reset chat  Clear Slack thread memory
+/tools      Show safe Vortex agent tools
+vortex status
+vortex open dashboard
+vortex git status
+vortex check
+vortex files
 ```
 
 ## Environment
@@ -267,6 +276,8 @@ BOT_NAME=Vortex
 SYSTEM_PROMPT=You are Codex, a concise, useful AI assistant inside Slack and Telegram.
 MAX_HISTORY_MESSAGES=12
 REPLY_IN_THREAD=true
+AGENT_TOOLS_ENABLED=true
+AGENT_MODE=safe
 SLACK_BOT_TOKEN=xoxb-...
 SLACK_APP_TOKEN=xapp-...
 SLACK_SIGNING_SECRET=
