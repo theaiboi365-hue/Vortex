@@ -20,6 +20,87 @@ function Require-Command($name, $installHint) {
   }
 }
 
+function Copy-AppFiles($source, $destination) {
+  New-Item -ItemType Directory -Force -Path $destination | Out-Null
+
+  foreach ($dir in @(".github", "assets", "docs", "scripts", "src")) {
+    $sourceDir = Join-Path $source $dir
+    if (Test-Path -LiteralPath $sourceDir) {
+      Copy-Item -LiteralPath $sourceDir -Destination $destination -Recurse -Force
+    }
+  }
+
+  Get-ChildItem -LiteralPath $source -File -Force |
+    Where-Object { $_.Name -ne ".env" } |
+    ForEach-Object {
+      Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $destination $_.Name) -Force
+    }
+}
+
+function New-VortexIcon($projectRoot) {
+  $iconPath = Join-Path $projectRoot "assets\vortex-logo.ico"
+  if (Test-Path -LiteralPath $iconPath) { return $iconPath }
+
+  Add-Type -AssemblyName System.Drawing
+  $size = 256
+  $bmp = New-Object System.Drawing.Bitmap $size, $size
+  $g = [System.Drawing.Graphics]::FromImage($bmp)
+  $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+  $g.Clear([System.Drawing.Color]::FromArgb(8, 11, 14))
+
+  $gridPen = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(19, 32, 42)), 1
+  for ($x = 0; $x -le $size; $x += 38) { $g.DrawLine($gridPen, $x, 0, $x, $size) }
+  for ($y = 0; $y -le $size; $y += 38) { $g.DrawLine($gridPen, 0, $y, $size, $y) }
+
+  $circleBrush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(16, 24, 32))
+  $circlePen = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(45, 59, 69)), 4
+  $g.FillEllipse($circleBrush, 32, 32, 192, 192)
+  $g.DrawEllipse($circlePen, 32, 32, 192, 192)
+
+  function P($x, $y) { New-Object System.Drawing.PointF $x, $y }
+  $green = [System.Drawing.Color]::FromArgb(112, 227, 159)
+  $cyan = [System.Drawing.Color]::FromArgb(107, 216, 255)
+  $dark = [System.Drawing.Color]::FromArgb(18, 29, 36)
+  $outer = @((P 128 38), (P 198 78), (P 198 158), (P 128 198), (P 58 158), (P 58 78))
+  $inner = @((P 128 86), (P 162 105), (P 162 145), (P 128 164), (P 94 145), (P 94 105))
+  $polyBrush = New-Object System.Drawing.SolidBrush $dark
+  $greenPen = New-Object System.Drawing.Pen $green, 8
+  $greenPen.LineJoin = [System.Drawing.Drawing2D.LineJoin]::Round
+  $greenPen.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
+  $greenPen.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
+  $g.FillPolygon($polyBrush, $outer)
+  $g.DrawPolygon($greenPen, $outer)
+  $cyanBrush = New-Object System.Drawing.SolidBrush $cyan
+  $g.FillPolygon($cyanBrush, $inner)
+  $g.DrawLine($greenPen, (P 58 158), (P 128 119))
+  $g.DrawLine($greenPen, (P 128 119), (P 198 158))
+  $g.DrawLine($greenPen, (P 128 119), (P 128 198))
+
+  $ms = New-Object System.IO.MemoryStream
+  $bmp.Save($ms, [System.Drawing.Imaging.ImageFormat]::Png)
+  $png = $ms.ToArray()
+  $fs = [System.IO.File]::Create($iconPath)
+  $bw = New-Object System.IO.BinaryWriter($fs)
+  $bw.Write([UInt16]0)
+  $bw.Write([UInt16]1)
+  $bw.Write([UInt16]1)
+  $bw.Write([Byte]0)
+  $bw.Write([Byte]0)
+  $bw.Write([Byte]0)
+  $bw.Write([Byte]0)
+  $bw.Write([UInt16]1)
+  $bw.Write([UInt16]32)
+  $bw.Write([UInt32]$png.Length)
+  $bw.Write([UInt32]22)
+  $bw.Write($png)
+  $bw.Close()
+  $fs.Close()
+  $g.Dispose()
+  $bmp.Dispose()
+
+  return $iconPath
+}
+
 Write-Host ""
 Write-Host "Vortex Windows setup" -ForegroundColor Green
 Write-Host "This downloads the bot, installs dependencies, enables startup, and opens the setup UI." -ForegroundColor Gray
@@ -43,15 +124,13 @@ if (-not (Test-Path $downloadedRoot)) {
 }
 
 if (Test-Path $appRoot) {
-  $backupRoot = Join-Path $installRoot ("backup-" + (Get-Date -Format "yyyyMMdd-HHmmss"))
-  Move-Item -LiteralPath $appRoot -Destination $backupRoot
-  Write-Host "Previous install backed up to: $backupRoot" -ForegroundColor Gray
-}
-Move-Item -LiteralPath $downloadedRoot -Destination $appRoot
-
-if ($backupRoot -and (Test-Path (Join-Path $backupRoot ".env"))) {
-  Copy-Item -LiteralPath (Join-Path $backupRoot ".env") -Destination (Join-Path $appRoot ".env") -Force
-  Write-Host "Preserved existing .env tokens from previous install." -ForegroundColor Green
+  $existingEnv = Join-Path $appRoot ".env"
+  Copy-AppFiles $downloadedRoot $appRoot
+  if (Test-Path -LiteralPath $existingEnv) {
+    Write-Host "Preserved existing .env tokens from previous install." -ForegroundColor Green
+  }
+} else {
+  Move-Item -LiteralPath $downloadedRoot -Destination $appRoot
 }
 
 Write-Step "Creating .env"
@@ -60,6 +139,8 @@ try {
   if (-not (Test-Path ".env")) {
     Copy-Item ".env.example" ".env"
   }
+
+  $iconPath = New-VortexIcon $appRoot
 
   Write-Step "Installing dependencies"
   npm.cmd install
@@ -70,13 +151,22 @@ try {
   Write-Step "Creating desktop launcher"
   $desktop = [Environment]::GetFolderPath("Desktop")
   $shortcutPath = Join-Path $desktop "Vortex.lnk"
+  $startMenuDir = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Vortex"
+  New-Item -ItemType Directory -Force -Path $startMenuDir | Out-Null
+  $startMenuShortcutPath = Join-Path $startMenuDir "Vortex.lnk"
   $shell = New-Object -ComObject WScript.Shell
-  $shortcut = $shell.CreateShortcut($shortcutPath)
-  $shortcut.TargetPath = "powershell.exe"
-  $shortcut.Arguments = "-ExecutionPolicy Bypass -File `"$appRoot\scripts\start.ps1`""
-  $shortcut.WorkingDirectory = $appRoot
-  $shortcut.WindowStyle = 1
-  $shortcut.Save()
+  foreach ($targetPath in @($shortcutPath, $startMenuShortcutPath)) {
+    $shortcut = $shell.CreateShortcut($targetPath)
+    $shortcut.TargetPath = "wscript.exe"
+    $shortcut.Arguments = "`"$appRoot\scripts\launch.vbs`""
+    $shortcut.WorkingDirectory = $appRoot
+    $shortcut.Description = "Open Vortex"
+    if (Test-Path -LiteralPath $iconPath) {
+      $shortcut.IconLocation = $iconPath
+    }
+    $shortcut.WindowStyle = 7
+    $shortcut.Save()
+  }
 
   Write-Step "Starting bot in background"
   powershell.exe -ExecutionPolicy Bypass -File ".\scripts\start-hidden.ps1"
@@ -85,9 +175,10 @@ try {
   Start-Process $dashboardUrl
 
   Write-Host ""
-  Write-Host "Done. Paste your Telegram, Slack, and AI tokens in the setup UI." -ForegroundColor Green
+  Write-Host "Done. Paste your Telegram token in the setup UI. Slack tokens are optional." -ForegroundColor Green
   Write-Host "Installed at: $appRoot" -ForegroundColor Gray
   Write-Host "Dashboard: $dashboardUrl" -ForegroundColor Cyan
+  Write-Host "Desktop and Start Menu shortcuts were created as Vortex." -ForegroundColor Cyan
 }
 finally {
   Pop-Location

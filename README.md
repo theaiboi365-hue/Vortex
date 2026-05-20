@@ -7,7 +7,7 @@
 [![Telegram](https://img.shields.io/badge/Telegram-BotFather-70e39f?style=for-the-badge&logo=telegram)](#telegram-setup)
 [![License: MIT](https://img.shields.io/badge/License-MIT-eff5f1?style=for-the-badge)](LICENSE)
 
-Run Codex from Telegram and Slack with one PowerShell command.
+Run Codex from Telegram, optional Slack, and a local Vortex dashboard with one PowerShell command.
 
 Vortex turns a Windows laptop into a personal AI command center: Telegram for phone control, Slack for team channels, and a local dashboard for choosing which AI brain handles each function.
 
@@ -23,7 +23,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 
 1. Download with one command.
 2. Open a local setup UI.
-3. Paste Telegram and Slack tokens.
+3. Paste a Telegram token. Add Slack tokens only if you want Slack.
 4. Message Codex from phone or team chat.
 5. Route specific functions to Codex, Claude, OpenAI-compatible APIs, or Ollama.
 
@@ -41,11 +41,12 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 ## What You Get
 
 - Local setup dashboard at `http://127.0.0.1:8787`
+- Desktop and Start Menu app launchers named `Vortex`
 - Codex as the default AI brain
 - Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
 - Optional Anthropic/Claude, OpenAI-compatible, and Ollama brains
 - Telegram token UI with BotFather steps
-- Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
+- Optional Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
 - Slack threaded replies by default
 - Telegram `/start` and `/reset`
 - Safe OpenClaw-style agent tools with `/tools`
@@ -87,7 +88,7 @@ Open PowerShell and run:
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
-This downloads the repo, installs dependencies, enables startup automation, creates a desktop launcher, starts the bot, and opens:
+This downloads the repo, installs dependencies, enables startup automation, creates Desktop and Start Menu launchers, starts Vortex in the background, and opens:
 
 ```text
 http://127.0.0.1:8787
@@ -126,7 +127,7 @@ Open:
 http://127.0.0.1:8787
 ```
 
-Keep `AI_PROVIDER=codex`, paste Telegram/Slack tokens, save, then restart:
+Keep `AI_PROVIDER=codex`, paste a Telegram token, save, then open Vortex from the Desktop or Start Menu shortcut. Slack tokens are optional:
 
 ```powershell
 npm.cmd start
