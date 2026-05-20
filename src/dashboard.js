@@ -322,7 +322,7 @@ function page() {
           </div>
           <div class="run-command">
             <label>Run Vortex locally</label>
-            <p>Paste this in PowerShell, not inside this dashboard.</p>
+            <p>If this dashboard is already open, Vortex is already running. Paste this in PowerShell only when you need to start it again.</p>
             <div class="code-box">
               <pre id="runCommand">${runCommandText()}</pre>
               <button class="copy-button" id="copyRunCommand" type="button">Copy</button>
