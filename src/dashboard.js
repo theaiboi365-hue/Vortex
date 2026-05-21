@@ -647,11 +647,424 @@ npm.cmd start</pre>
 </html>`;
 }
 
+function cockpitPage() {
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vortex</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090c;
+      --panel: #0d1117;
+      --panel-2: #111821;
+      --panel-3: #151f2a;
+      --line: #263241;
+      --text: #edf4f8;
+      --muted: #93a4b4;
+      --soft: #c7d4df;
+      --green: #70e39f;
+      --cyan: #6bd8ff;
+      --amber: #ffc575;
+      --red: #ff7676;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: 0;
+    }
+    button, input, textarea, select { font: inherit; letter-spacing: 0; }
+    .shell { display: grid; grid-template-columns: 248px minmax(0, 1fr) 318px; height: 100vh; }
+    .sidebar {
+      background: #070b0f;
+      border-right: 1px solid var(--line);
+      padding: 22px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 14px; }
+    .logo {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(112,227,159,.2), rgba(107,216,255,.13));
+      border: 1px solid rgba(112,227,159,.28);
+      color: var(--green); font-weight: 900; font-size: 22px;
+    }
+    .brand h1 { margin: 0; font-size: 22px; line-height: 1; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .nav { display: grid; gap: 8px; }
+    .nav button {
+      height: 42px; border: 0; border-radius: 8px; color: var(--soft);
+      background: transparent; text-align: left; padding: 0 12px;
+      cursor: pointer;
+    }
+    .nav button.active { color: var(--green); background: #111a21; }
+    .nav button:hover { background: #10171e; }
+    .mini-card {
+      margin-top: auto;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      background:
+        radial-gradient(circle at top left, rgba(112,227,159,.08), transparent 30%),
+        var(--bg);
+    }
+    .topbar {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 9, 12, .72);
+    }
+    .title h2 { margin: 0; font-size: 18px; }
+    .title p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(112,227,159,.28);
+      background: rgba(112,227,159,.09);
+      color: var(--green);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 99px; background: currentColor; }
+    .chat {
+      overflow: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .welcome {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(17,24,33,.92), rgba(13,17,23,.92));
+      box-shadow: var(--shadow);
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 820px;
+    }
+    .welcome h3 { margin: 0 0 8px; font-size: 24px; }
+    .welcome p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .quick { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .quick button, .cmd {
+      border: 1px solid var(--line);
+      background: #0b1117;
+      color: var(--soft);
+      border-radius: 8px;
+      padding: 9px 11px;
+      cursor: pointer;
+    }
+    .quick button:hover, .cmd:hover { border-color: rgba(112,227,159,.5); color: var(--green); }
+    .msg { display: flex; gap: 12px; max-width: 860px; }
+    .avatar {
+      width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px;
+      display: grid; place-items: center; font-weight: 900;
+      background: var(--panel-3); color: var(--green); border: 1px solid var(--line);
+    }
+    .bubble {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 13px 15px;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      color: var(--soft);
+    }
+    .msg.user { margin-left: auto; flex-direction: row-reverse; }
+    .msg.user .avatar { color: var(--cyan); }
+    .msg.user .bubble { background: #101820; color: var(--text); }
+    .composer {
+      padding: 18px 28px 24px;
+      border-top: 1px solid var(--line);
+      background: rgba(7, 9, 12, .9);
+    }
+    .composer-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    textarea {
+      resize: none; min-height: 48px; max-height: 130px;
+      border: 0; outline: 0; background: transparent;
+      color: var(--text); padding: 8px; line-height: 1.45;
+    }
+    .send {
+      width: 46px; height: 46px; border: 0; border-radius: 8px;
+      background: var(--green); color: #06100b; font-weight: 900;
+      cursor: pointer;
+    }
+    .side {
+      border-left: 1px solid var(--line);
+      background: #090d12;
+      padding: 22px 16px;
+      overflow: auto;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .panel h3 { margin: 0 0 10px; font-size: 14px; }
+    .tile {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid #1f2a36;
+      padding: 10px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .tile strong { color: var(--text); font-weight: 700; }
+    .badge {
+      border-radius: 999px; padding: 4px 8px; font-size: 11px;
+      color: var(--amber); background: rgba(255,197,117,.1);
+    }
+    .badge.ok { color: var(--green); background: rgba(112,227,159,.1); }
+    .settings { display: none; position: absolute; inset: 0; background: rgba(7,9,12,.72); padding: 30px; overflow: auto; }
+    .settings.open { display: block; }
+    .settings-card { max-width: 980px; margin: 0 auto; background: #0b1117; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+    .settings-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .settings-head h3 { margin: 0; font-size: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .field label { display: block; color: var(--muted); font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 8px;
+      background: #080d12; color: var(--text); padding: 10px 11px; outline: 0;
+    }
+    .field textarea { min-height: 84px; }
+    .wide { grid-column: 1 / -1; }
+    .actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .primary, .secondary {
+      border: 1px solid var(--line); border-radius: 8px; padding: 10px 13px;
+      cursor: pointer; color: var(--text); background: var(--panel-2);
+    }
+    .primary { background: var(--green); color: #06100b; border-color: var(--green); font-weight: 800; }
+    .notice { min-height: 20px; margin-top: 10px; color: var(--amber); font-size: 13px; }
+    code { font-family: "Cascadia Code", Consolas, monospace; }
+    @media (max-width: 1020px) {
+      .shell { grid-template-columns: 210px minmax(0, 1fr); }
+      .side { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">V</div>
+        <div><h1>Vortex</h1><p>Agent cockpit</p></div>
+      </div>
+      <nav class="nav">
+        <button class="active" type="button">Chat</button>
+        <button id="openSettings" type="button">Setup</button>
+        <button id="openModels" type="button">Models</button>
+        <button id="openChannels" type="button">Channels</button>
+      </nav>
+      <div class="mini-card">
+        Install once. Chat immediately. Add Telegram, Slack, Claude, Gemini, OpenAI, or Ollama only when you need them.
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="title">
+          <h2>Chat</h2>
+          <p>Local-first command center with optional channel delivery.</p>
+        </div>
+        <div class="status-pill"><span class="dot"></span><span id="runtimeStatus">Starting</span></div>
+      </header>
+      <section class="chat" id="chat">
+        <div class="welcome">
+          <h3>What do you want Vortex to do?</h3>
+          <p>Start here like ChatGPT. Telegram and Slack are just delivery channels, not setup blockers.</p>
+          <div class="quick">
+            <button data-prompt="Explain what Vortex can do in 5 bullets">Explain Vortex</button>
+            <button data-prompt="vortex status">Run status</button>
+            <button data-prompt="Help me connect Telegram later">Connect Telegram later</button>
+          </div>
+        </div>
+      </section>
+      <section class="composer">
+        <div class="composer-inner">
+          <textarea id="prompt" placeholder="Message Vortex..."></textarea>
+          <button class="send" id="send" title="Send">↑</button>
+        </div>
+      </section>
+      <section class="settings" id="settings">
+        <div class="settings-card">
+          <div class="settings-head">
+            <div><h3>Vortex Setup</h3><p style="margin:4px 0 0;color:var(--muted)">Everything is optional except the brain you choose to use.</p></div>
+            <button class="secondary" id="closeSettings" type="button">Close</button>
+          </div>
+          <form id="setupForm" class="grid">
+            <div class="field"><label>Bot name</label><input name="BOT_NAME" placeholder="Vortex" /></div>
+            <div class="field"><label>Default brain</label><select name="AI_PROVIDER">${options(providerOptions)}</select></div>
+            <div class="field"><label>Slack brain</label><select name="SLACK_AI_PROVIDER"><option value="">Use default</option>${options(providerOptions)}</select></div>
+            <div class="field"><label>Telegram brain</label><select name="TELEGRAM_AI_PROVIDER"><option value="">Use default</option>${options(providerOptions)}</select></div>
+            <div class="field"><label>Codex command</label><input name="CODEX_COMMAND" placeholder="codex" /></div>
+            <div class="field"><label>Codex model</label><input name="CODEX_MODEL" list="codexModels" placeholder="optional" /><datalist id="codexModels">${dataListOptions(codexModelGroups)}</datalist></div>
+            <div class="field"><label>Claude model</label><input name="CLAUDE_MODEL" list="claudeModels" /><datalist id="claudeModels">${dataListOptions(claudeModels)}</datalist></div>
+            <div class="field"><label>OpenAI model</label><input name="OPENAI_MODEL" list="openAIModels" /><datalist id="openAIModels">${dataListOptions(openAIModelGroups)}</datalist></div>
+            <div class="field"><label>Gemini model</label><input name="GEMINI_MODEL" list="geminiModels" /><datalist id="geminiModels">${dataListOptions(geminiModelGroups)}</datalist></div>
+            <div class="field"><label>Ollama model</label><input name="OLLAMA_MODEL" list="ollamaModels" /><datalist id="ollamaModels">${dataListOptions(ollamaModels)}</datalist></div>
+            <div class="field"><label>OpenAI base URL</label><input name="OPENAI_BASE_URL" placeholder="https://api.openai.com/v1" /></div>
+            <div class="field"><label>Ollama base URL</label><input name="OLLAMA_BASE_URL" placeholder="http://127.0.0.1:11434" /></div>
+            <div class="field"><label>Telegram token (optional)</label><input name="TELEGRAM_BOT_TOKEN" type="password" autocomplete="off" /></div>
+            <div class="field"><label>Telegram allowed user IDs</label><input name="TELEGRAM_ALLOWED_USER_IDS" /></div>
+            <div class="field"><label>Slack bot token (optional)</label><input name="SLACK_BOT_TOKEN" type="password" autocomplete="off" /></div>
+            <div class="field"><label>Slack app token (optional)</label><input name="SLACK_APP_TOKEN" type="password" autocomplete="off" /></div>
+            <div class="field"><label>Anthropic key (only for Claude)</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" /></div>
+            <div class="field"><label>OpenAI key (only for OpenAI)</label><input name="OPENAI_API_KEY" type="password" autocomplete="off" /></div>
+            <div class="field"><label>Google key (only for Gemini)</label><input name="GOOGLE_API_KEY" type="password" autocomplete="off" /></div>
+            <div class="field"><label>Dashboard port</label><input name="DASHBOARD_PORT" /></div>
+            <div class="field wide"><label>System prompt</label><textarea name="SYSTEM_PROMPT"></textarea></div>
+          </form>
+          <div class="actions">
+            <button class="primary" id="save" type="button">Save</button>
+            <button class="secondary" id="refresh" type="button">Refresh</button>
+            <button class="secondary" id="copyRunCommand" type="button">Copy Run Command</button>
+          </div>
+          <div class="notice" id="notice"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="side">
+      <div class="panel">
+        <h3>Runtime</h3>
+        <div class="tile"><span>Brain</span><strong id="brainText">codex</strong></div>
+        <div class="tile"><span>Telegram</span><span class="badge" id="telegramBadge">Optional</span></div>
+        <div class="tile"><span>Slack</span><span class="badge" id="slackBadge">Optional</span></div>
+      </div>
+      <div class="panel">
+        <h3>Safe Commands</h3>
+        <button class="cmd" data-prompt="vortex status">vortex status</button>
+        <button class="cmd" data-prompt="vortex check">vortex check</button>
+        <button class="cmd" data-prompt="vortex files">vortex files</button>
+      </div>
+      <div class="panel">
+        <h3>Install Flow</h3>
+        <p style="color:var(--muted);line-height:1.5;margin:0">One PowerShell command installs the app. Users can chat first and connect Telegram/Slack later.</p>
+      </div>
+    </aside>
+  </div>
+  <script>
+    const form = document.querySelector("#setupForm");
+    const fields = Array.from(form.elements).filter((item) => item.name);
+    const chat = document.querySelector("#chat");
+    const promptBox = document.querySelector("#prompt");
+    const sendButton = document.querySelector("#send");
+    const settings = document.querySelector("#settings");
+    const notice = document.querySelector("#notice");
+
+    async function api(path, options) {
+      const response = await fetch(path, options);
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+      if (!response.ok) throw new Error(data.error || text || "Request failed");
+      return data;
+    }
+    function setBadge(id, ok) {
+      const badge = document.querySelector(id);
+      badge.textContent = ok ? "Connected" : "Optional";
+      badge.classList.toggle("ok", ok);
+    }
+    async function load() {
+      const status = await api("/api/status");
+      document.querySelector("#runtimeStatus").textContent = "Running | " + status.brain.provider;
+      document.querySelector("#brainText").textContent = status.brain.provider;
+      setBadge("#telegramBadge", status.telegram);
+      setBadge("#slackBadge", status.slack);
+      const values = await api("/api/env");
+      for (const field of fields) field.value = values[field.name] || "";
+    }
+    function appendMessage(role, text) {
+      const row = document.createElement("div");
+      row.className = "msg " + (role === "user" ? "user" : "assistant");
+      row.innerHTML = '<div class="avatar">' + (role === "user" ? "Y" : "V") + '</div><div class="bubble"></div>';
+      row.querySelector(".bubble").textContent = text;
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+    }
+    async function sendMessage(text) {
+      const value = (text || promptBox.value).trim();
+      if (!value) return;
+      promptBox.value = "";
+      appendMessage("user", value);
+      sendButton.disabled = true;
+      sendButton.textContent = "…";
+      try {
+        const data = await api("/api/chat", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: value }) });
+        appendMessage("assistant", data.answer || "Done.");
+      } catch (error) {
+        appendMessage("assistant", error.message);
+      } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = "↑";
+      }
+    }
+    document.querySelector("#send").addEventListener("click", () => sendMessage());
+    promptBox.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+    document.querySelectorAll("[data-prompt]").forEach((button) => {
+      button.addEventListener("click", () => sendMessage(button.dataset.prompt));
+    });
+    document.querySelectorAll("#openSettings,#openModels,#openChannels").forEach((button) => {
+      button.addEventListener("click", () => settings.classList.add("open"));
+    });
+    document.querySelector("#closeSettings").addEventListener("click", () => settings.classList.remove("open"));
+    document.querySelector("#refresh").addEventListener("click", () => load().catch((error) => notice.textContent = error.message));
+    document.querySelector("#save").addEventListener("click", async () => {
+      const values = Object.fromEntries(new FormData(form).entries());
+      await api("/api/env", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(values) });
+      notice.textContent = "Saved. Restart Vortex if you changed bot tokens or providers.";
+      await load();
+    });
+    document.querySelector("#copyRunCommand").addEventListener("click", async () => {
+      await fetch("/api/copy-run-command", { method: "POST" });
+      notice.textContent = "Run command copied.";
+    });
+    load().catch((error) => appendMessage("assistant", error.message));
+  </script>
+</body>
+</html>`;
+}
+
 export function startDashboard() {
   const server = http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url, `http://${request.headers.host}`);
-      if (request.method === "GET" && url.pathname === "/") return send(response, 200, page(), "text/html; charset=utf-8");
+      if (request.method === "GET" && url.pathname === "/") return send(response, 200, cockpitPage(), "text/html; charset=utf-8");
       if (request.method === "GET" && url.pathname === "/api/status") return send(response, 200, statusFrom(await readEnv()));
       if (request.method === "GET" && url.pathname === "/api/env") return send(response, 200, await readEnv());
       if (request.method === "POST" && url.pathname === "/api/copy-run-command") {

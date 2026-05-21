@@ -200,7 +200,7 @@ try {
   powershell.exe -ExecutionPolicy Bypass -File ".\scripts\start-hidden.ps1"
 
   Write-Step "Opening Vortex desktop app"
-  Start-Process -FilePath "powershell.exe" -ArgumentList "-STA -NoProfile -ExecutionPolicy Bypass -File `"$appRoot\scripts\vortex-desktop.ps1`""
+  Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$appRoot\scripts\open-vortex-app.ps1`""
 
   Write-Host ""
   Write-Host "Done. Vortex is installed. You can chat in the app now." -ForegroundColor Green
