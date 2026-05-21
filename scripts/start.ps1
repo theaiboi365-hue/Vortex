@@ -1,3 +1,3 @@
 $ErrorActionPreference = "Stop"
 
-powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File "$PSScriptRoot\vortex-desktop.ps1"
+powershell.exe -STA -NoProfile -ExecutionPolicy Bypass -File "$PSScriptRoot\vortex-desktop.ps1"

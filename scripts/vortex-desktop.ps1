@@ -28,6 +28,16 @@ function Start-VortexServer {
   }
 }
 
+function Restart-VortexServer {
+  $matches = Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" |
+    Where-Object { $_.CommandLine -like "*$projectRoot*" -or $_.CommandLine -like "*src/index.js*" }
+  foreach ($process in $matches) {
+    Stop-Process -Id $process.ProcessId -Force
+  }
+  Start-Sleep -Milliseconds 500
+  Start-VortexServer
+}
+
 function Invoke-VortexApi($path, $method = "GET", $body = $null) {
   $params = @{
     Uri = "$dashboardUrl$path"
@@ -97,6 +107,7 @@ $form.MinimumSize = New-Object System.Drawing.Size(860, 620)
 $form.StartPosition = "CenterScreen"
 $form.BackColor = [System.Drawing.Color]::FromArgb(8, 11, 14)
 $form.ForeColor = [System.Drawing.Color]::White
+$form.TopMost = $true
 if (Test-Path -LiteralPath $iconPath) { $form.Icon = New-Object System.Drawing.Icon($iconPath) }
 
 $header = New-Object System.Windows.Forms.Panel
@@ -156,6 +167,7 @@ $mainPanel = New-TabPage "Setup"
 $brainPanel = New-TabPage "Models"
 $tokenPanel = New-TabPage "Tokens"
 $agentPanel = New-TabPage "Agent"
+$usePanel = New-TabPage "Use"
 
 $controls.BOT_NAME = New-Input "BOT_NAME"
 Add-Field $mainPanel "Bot name" $controls.BOT_NAME
@@ -217,6 +229,20 @@ $controls.SYSTEM_PROMPT.BackColor = [System.Drawing.Color]::FromArgb(14, 20, 26)
 $controls.SYSTEM_PROMPT.ForeColor = [System.Drawing.Color]::White
 Add-Field $agentPanel "System prompt" $controls.SYSTEM_PROMPT
 
+$useText = New-Object System.Windows.Forms.Label
+$useText.Text = @"
+1. Paste Telegram token in Tokens, then Save.
+2. Send /id to your Telegram bot, paste the returned number in Telegram allowed user IDs, then Save.
+3. Pick brains/models in Setup and Models. You can type any new model name.
+4. Click Restart Bot after token/model changes.
+5. Use Telegram or Slack to chat. Agent commands start with: vortex status, vortex check, vortex files.
+"@
+$useText.Font = New-Object System.Drawing.Font("Segoe UI", 11)
+$useText.ForeColor = [System.Drawing.Color]::FromArgb(220, 228, 235)
+$useText.AutoSize = $true
+$useText.MaximumSize = New-Object System.Drawing.Size(820, 0)
+[void]$usePanel.Controls.Add($useText)
+
 $footer = New-Object System.Windows.Forms.Panel
 $footer.Dock = "Bottom"
 $footer.Height = 58
@@ -236,10 +262,11 @@ function New-Button($text, $x) {
 }
 
 $saveButton = New-Button "Save" 20
-$refreshButton = New-Button "Refresh" 158
-$browserButton = New-Button "Web UI" 296
-$logButton = New-Button "Log" 434
-$footer.Controls.AddRange(@($saveButton, $refreshButton, $browserButton, $logButton))
+$restartButton = New-Button "Restart Bot" 158
+$refreshButton = New-Button "Refresh" 296
+$browserButton = New-Button "Web UI" 434
+$logButton = New-Button "Log" 572
+$footer.Controls.AddRange(@($saveButton, $restartButton, $refreshButton, $browserButton, $logButton))
 
 function Load-VortexData {
   try {
@@ -276,6 +303,16 @@ function Save-VortexData {
 }
 
 $saveButton.Add_Click({ Save-VortexData })
+$restartButton.Add_Click({
+  try {
+    $status.Text = "Restarting..."
+    Restart-VortexServer
+    Load-VortexData
+  }
+  catch {
+    [System.Windows.Forms.MessageBox]::Show($_.Exception.Message, "Restart failed", "OK", "Error") | Out-Null
+  }
+})
 $refreshButton.Add_Click({ Load-VortexData })
 $browserButton.Add_Click({ Start-Process $dashboardUrl })
 $logButton.Add_Click({
@@ -284,5 +321,17 @@ $logButton.Add_Click({
   }
 })
 
-$form.Add_Shown({ Load-VortexData })
+$form.Add_Shown({
+  $form.Activate()
+  $form.BringToFront()
+  Load-VortexData
+  $timer = New-Object System.Windows.Forms.Timer
+  $timer.Interval = 1200
+  $timer.Add_Tick({
+    $form.TopMost = $false
+    $timer.Stop()
+    $timer.Dispose()
+  })
+  $timer.Start()
+})
 [void]$form.ShowDialog()
