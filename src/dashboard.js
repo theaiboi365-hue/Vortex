@@ -654,6 +654,8 @@ function cockpitPage() {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vortex</title>
+  <link rel="icon" href="/assets/vortex-icon.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   <style>
     :root {
       color-scheme: dark;
@@ -1064,6 +1066,19 @@ export function startDashboard() {
   const server = http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url, `http://${request.headers.host}`);
+      if (request.method === "GET" && url.pathname === "/assets/vortex-icon.svg") {
+        return send(response, 200, await fs.readFile(path.join(process.cwd(), "assets", "vortex-icon.svg"), "utf8"), "image/svg+xml");
+      }
+      if (request.method === "GET" && url.pathname === "/assets/vortex-logo.svg") {
+        return send(response, 200, await fs.readFile(path.join(process.cwd(), "assets", "vortex-logo.svg"), "utf8"), "image/svg+xml");
+      }
+      if (request.method === "GET" && url.pathname === "/favicon.ico") {
+        try {
+          return send(response, 200, await fs.readFile(path.join(process.cwd(), "assets", "vortex-logo.ico")), "image/x-icon");
+        } catch {
+          return send(response, 200, await fs.readFile(path.join(process.cwd(), "assets", "vortex-icon.svg"), "utf8"), "image/svg+xml");
+        }
+      }
       if (request.method === "GET" && url.pathname === "/") return send(response, 200, cockpitPage(), "text/html; charset=utf-8");
       if (request.method === "GET" && url.pathname === "/api/status") return send(response, 200, statusFrom(await readEnv()));
       if (request.method === "GET" && url.pathname === "/api/env") return send(response, 200, await readEnv());
