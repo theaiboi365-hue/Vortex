@@ -20,6 +20,35 @@ function Require-Command($name, $installHint) {
   }
 }
 
+function Update-SessionPath {
+  $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+  $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+  $env:Path = "$machinePath;$userPath"
+}
+
+function Ensure-NodeRuntime {
+  Update-SessionPath
+  if ((Get-Command node -ErrorAction SilentlyContinue) -and (Get-Command npm.cmd -ErrorAction SilentlyContinue)) {
+    return
+  }
+
+  if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host "Node.js is missing." -ForegroundColor Red
+    Write-Host "Install Node.js 20+ from https://nodejs.org, then run this setup command again." -ForegroundColor Yellow
+    exit 1
+  }
+
+  Write-Step "Installing Node.js LTS"
+  winget install --id OpenJS.NodeJS.LTS --exact --accept-package-agreements --accept-source-agreements
+  Update-SessionPath
+
+  if (-not (Get-Command node -ErrorAction SilentlyContinue) -or -not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) {
+    Write-Host "Node.js was installed, but this terminal has not picked it up yet." -ForegroundColor Yellow
+    Write-Host "Close PowerShell, open it again, and run the same Vortex install command once more." -ForegroundColor Yellow
+    exit 1
+  }
+}
+
 function Copy-AppFiles($source, $destination) {
   New-Item -ItemType Directory -Force -Path $destination | Out-Null
 
@@ -103,10 +132,9 @@ function New-VortexIcon($projectRoot) {
 
 Write-Host ""
 Write-Host "Vortex Windows setup" -ForegroundColor Green
-Write-Host "This downloads the bot, installs dependencies, enables startup, and opens the setup UI." -ForegroundColor Gray
+Write-Host "This downloads Vortex, installs what it needs, creates the desktop app, and opens setup." -ForegroundColor Gray
 
-Require-Command "node" "Install Node.js 20+ from https://nodejs.org, then run this setup again."
-Require-Command "npm.cmd" "Reinstall Node.js with npm enabled, then run this setup again."
+Ensure-NodeRuntime
 
 Write-Step "Preparing install folder"
 New-Item -ItemType Directory -Force -Path $installRoot | Out-Null

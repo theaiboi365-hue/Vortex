@@ -1,18 +1,22 @@
-# Windows One-Click Setup
+# Windows App Install
 
-Vortex can be installed from GitHub with one PowerShell command.
+Vortex is meant to be installed like this:
 
-## Install
-
-Open PowerShell and run:
+1. Open the GitHub repo.
+2. Copy the command below.
+3. Paste it into Windows PowerShell.
+4. Let the installer run.
+5. Fill tokens/API keys inside the Vortex app window.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
+The command downloads the installer script from GitHub and starts the local app installation.
+
 ## Terminal Install
 
-For a normal terminal install:
+For developers only:
 
 ```powershell
 git clone https://github.com/theaiboi365-hue/Vortex.git
@@ -24,6 +28,7 @@ npm.cmd start
 
 The installer will:
 
+- Install Node.js LTS with `winget` if Node/npm are missing and `winget` is available
 - Download the latest GitHub repo zip
 - Install it to `%LOCALAPPDATA%\Vortex\app`
 - Run `npm.cmd install`
@@ -32,19 +37,20 @@ The installer will:
 - Create Desktop and Start Menu launchers named `Vortex`
 - Use the Vortex logo icon for the launchers
 - Start Vortex in the background
-- Open `http://127.0.0.1:8787`
+- Open the native Vortex desktop setup app
 - Reinstall safely over an existing Vortex folder without failing when Windows has the app folder open
 
 ## After Install
 
-In the setup UI:
+In the Vortex app:
 
-1. Keep `AI_PROVIDER=codex` or choose another brain.
-2. Add `TELEGRAM_BOT_TOKEN`.
-3. Leave Slack blank unless you want Slack. Slack is optional.
-4. If you want Slack later, add `SLACK_BOT_TOKEN` and `SLACK_APP_TOKEN`.
-5. Add optional Anthropic, OpenAI-compatible, or Ollama settings.
-6. Save, then open Vortex from the Desktop or Start Menu shortcut.
+1. Keep `AI_PROVIDER=codex` or choose another brain in `Setup`.
+2. Add `TELEGRAM_BOT_TOKEN` in `Tokens`.
+3. Add optional Claude/OpenAI/Gemini keys in `Tokens`.
+4. Pick models in `Models`.
+5. Click `Save`.
+6. Click `Restart Bot`.
+7. Open Vortex later from Desktop or Start Menu.
 
 If Slack and Telegram tokens are blank, Vortex still opens the local dashboard without auth errors.
 
