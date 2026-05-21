@@ -171,13 +171,14 @@ try {
   Write-Step "Starting bot in background"
   powershell.exe -ExecutionPolicy Bypass -File ".\scripts\start-hidden.ps1"
 
-  Write-Step "Opening setup UI"
-  Start-Process $dashboardUrl
+  Write-Step "Opening Vortex desktop app"
+  Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle Hidden -File `"$appRoot\scripts\vortex-desktop.ps1`""
 
   Write-Host ""
   Write-Host "Done. Paste your Telegram token in the setup UI. Slack tokens are optional." -ForegroundColor Green
   Write-Host "Installed at: $appRoot" -ForegroundColor Gray
-  Write-Host "Dashboard: $dashboardUrl" -ForegroundColor Cyan
+  Write-Host "Desktop app: Vortex shortcut" -ForegroundColor Cyan
+  Write-Host "Web dashboard fallback: $dashboardUrl" -ForegroundColor Gray
   Write-Host "Desktop and Start Menu shortcuts were created as Vortex." -ForegroundColor Cyan
 }
 finally {

@@ -42,6 +42,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 
 - Local setup dashboard at `http://127.0.0.1:8787`
 - Desktop and Start Menu app launchers named `Vortex`
+- Native Windows desktop setup app, so users do not need to work from a browser tab or npm terminal
 - Codex as the default AI brain
 - Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
 - Optional Anthropic/Claude, OpenAI-compatible, Gemini, and Ollama brains

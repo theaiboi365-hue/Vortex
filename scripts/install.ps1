@@ -25,9 +25,9 @@ try {
   npm.cmd install
 
   Write-Host ""
-  Write-Host "Installed. Start the bot and open the setup dashboard:" -ForegroundColor Green
+  Write-Host "Installed. Open the desktop app:" -ForegroundColor Green
   Write-Host "1. .\scripts\start.ps1"
-  Write-Host "2. http://127.0.0.1:8787"
+  Write-Host "2. Use the Vortex window to save tokens and models"
   Write-Host "3. Keep AI_PROVIDER=codex or choose another brain per function"
   Write-Host "4. Paste TELEGRAM_BOT_TOKEN, SLACK_BOT_TOKEN, SLACK_APP_TOKEN, and optional AI keys"
   Write-Host ""
