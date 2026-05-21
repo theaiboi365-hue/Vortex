@@ -132,7 +132,7 @@ function New-VortexIcon($projectRoot) {
 
 Write-Host ""
 Write-Host "Vortex Windows setup" -ForegroundColor Green
-Write-Host "This downloads Vortex, installs what it needs, creates the desktop app, and opens setup." -ForegroundColor Gray
+Write-Host "This downloads Vortex, installs what it needs, creates the desktop app, and opens Vortex." -ForegroundColor Gray
 
 Ensure-NodeRuntime
 
@@ -203,7 +203,8 @@ try {
   Start-Process -FilePath "powershell.exe" -ArgumentList "-STA -NoProfile -ExecutionPolicy Bypass -File `"$appRoot\scripts\vortex-desktop.ps1`""
 
   Write-Host ""
-  Write-Host "Done. Paste your Telegram token in the setup UI. Slack tokens are optional." -ForegroundColor Green
+  Write-Host "Done. Vortex is installed. You can chat in the app now." -ForegroundColor Green
+  Write-Host "Telegram and Slack tokens are optional; add them only if you want those apps." -ForegroundColor Green
   Write-Host "Installed at: $appRoot" -ForegroundColor Gray
   Write-Host "Desktop app: Vortex shortcut" -ForegroundColor Cyan
   Write-Host "Web dashboard fallback: $dashboardUrl" -ForegroundColor Gray

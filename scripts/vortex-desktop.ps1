@@ -163,11 +163,39 @@ function New-TabPage($name) {
   return $panel
 }
 
+$chatPanel = New-TabPage "Chat"
 $mainPanel = New-TabPage "Setup"
 $brainPanel = New-TabPage "Models"
 $tokenPanel = New-TabPage "Tokens"
 $agentPanel = New-TabPage "Agent"
 $usePanel = New-TabPage "Use"
+
+$chatOutput = New-Object System.Windows.Forms.TextBox
+$chatOutput.Multiline = $true
+$chatOutput.ReadOnly = $true
+$chatOutput.ScrollBars = "Vertical"
+$chatOutput.Width = 820
+$chatOutput.Height = 340
+$chatOutput.BackColor = [System.Drawing.Color]::FromArgb(14, 20, 26)
+$chatOutput.ForeColor = [System.Drawing.Color]::White
+$chatOutput.Text = "Vortex is installed. Type a message below. Telegram and Slack are optional."
+[void]$chatPanel.Controls.Add($chatOutput)
+
+$chatInput = New-Object System.Windows.Forms.TextBox
+$chatInput.Width = 680
+$chatInput.Height = 30
+$chatInput.BackColor = [System.Drawing.Color]::FromArgb(14, 20, 26)
+$chatInput.ForeColor = [System.Drawing.Color]::White
+[void]$chatPanel.Controls.Add($chatInput)
+
+$sendChatButton = New-Object System.Windows.Forms.Button
+$sendChatButton.Text = "Send"
+$sendChatButton.Width = 120
+$sendChatButton.Height = 30
+$sendChatButton.BackColor = [System.Drawing.Color]::FromArgb(112, 227, 159)
+$sendChatButton.ForeColor = [System.Drawing.Color]::FromArgb(5, 9, 10)
+$sendChatButton.FlatStyle = "Flat"
+[void]$chatPanel.Controls.Add($sendChatButton)
 
 $controls.BOT_NAME = New-Input "BOT_NAME"
 Add-Field $mainPanel "Bot name" $controls.BOT_NAME
@@ -231,11 +259,11 @@ Add-Field $agentPanel "System prompt" $controls.SYSTEM_PROMPT
 
 $useText = New-Object System.Windows.Forms.Label
 $useText.Text = @"
-1. Paste Telegram token in Tokens, then Save.
-2. Send /id to your Telegram bot, paste the returned number in Telegram allowed user IDs, then Save.
-3. Pick brains/models in Setup and Models. You can type any new model name.
-4. Click Restart Bot after token/model changes.
-5. Use Telegram or Slack to chat. Agent commands start with: vortex status, vortex check, vortex files.
+1. Install Vortex from the GitHub PowerShell command.
+2. Use the Chat tab immediately. Telegram and Slack are not compulsory.
+3. Add Telegram or Slack tokens only if you want messages to reach those apps.
+4. Pick brains/models in Setup and Models. You can type any new model name.
+5. Click Save, then Restart Bot after token/model changes.
 "@
 $useText.Font = New-Object System.Drawing.Font("Segoe UI", 11)
 $useText.ForeColor = [System.Drawing.Color]::FromArgb(220, 228, 235)
@@ -302,7 +330,34 @@ function Save-VortexData {
   }
 }
 
+function Send-LocalChat {
+  $text = $chatInput.Text.Trim()
+  if (-not $text) { return }
+  $chatOutput.AppendText("`r`n`r`nYou: $text")
+  $chatInput.Text = ""
+  $sendChatButton.Enabled = $false
+  $sendChatButton.Text = "Sending..."
+  try {
+    $reply = Invoke-VortexApi "/api/chat" "POST" @{ text = $text }
+    $chatOutput.AppendText("`r`n`r`nVortex: " + [string]$reply.answer)
+  }
+  catch {
+    $chatOutput.AppendText("`r`n`r`nVortex: " + $_.Exception.Message)
+  }
+  finally {
+    $sendChatButton.Text = "Send"
+    $sendChatButton.Enabled = $true
+  }
+}
+
 $saveButton.Add_Click({ Save-VortexData })
+$sendChatButton.Add_Click({ Send-LocalChat })
+$chatInput.Add_KeyDown({
+  if ($_.KeyCode -eq "Enter") {
+    $_.SuppressKeyPress = $true
+    Send-LocalChat
+  }
+})
 $restartButton.Add_Click({
   try {
     $status.Text = "Restarting..."

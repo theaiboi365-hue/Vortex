@@ -7,7 +7,7 @@
 [![Telegram](https://img.shields.io/badge/Telegram-BotFather-70e39f?style=for-the-badge&logo=telegram)](#telegram-setup)
 [![License: MIT](https://img.shields.io/badge/License-MIT-eff5f1?style=for-the-badge)](LICENSE)
 
-Run Codex from Telegram, optional Slack, and the Vortex Windows app with one PowerShell command.
+Install Vortex on Windows with one PowerShell command, then chat in the app. Telegram and Slack are optional.
 
 Vortex turns a Windows laptop into a personal AI command center: Telegram for phone control, Slack for team channels, and a local dashboard for choosing which AI brain handles each function.
 
@@ -21,15 +21,15 @@ Copy this command from GitHub, paste it into Windows PowerShell, and press Enter
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
-It downloads Vortex, installs missing Node.js with `winget` when possible, installs app dependencies, creates the Desktop/Start Menu app, starts the background bot, and opens the Vortex setup window.
+It downloads Vortex, installs missing Node.js with `winget` when possible, installs app dependencies, creates the Desktop/Start Menu app, starts the background bot, and opens Vortex.
 
-After the app opens:
+After the app opens, you can message Vortex directly in the `Chat` tab. Add tokens only when you want outside delivery:
 
-1. Paste your Telegram bot token in `Tokens`.
-2. Paste optional Claude/OpenAI/Gemini/Slack keys if you want those features.
-3. Pick models in `Models`.
-4. Click `Save`, then `Restart Bot`.
-5. Open Vortex later from the Desktop or Start Menu shortcut.
+1. Use `Chat` immediately.
+2. Paste a Telegram token only if you want Telegram messages.
+3. Paste Slack tokens only if you want Slack messages.
+4. Paste Claude/OpenAI/Gemini keys only if you choose those brains.
+5. Click `Save`, then `Restart Bot` after changing tokens/models.
 
 ## Why This Exists
 
@@ -57,6 +57,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - Local setup dashboard at `http://127.0.0.1:8787`
 - Desktop and Start Menu app launchers named `Vortex`
 - Native Windows desktop setup app, so users do not need to work from a browser tab or npm terminal
+- Local Chat tab that works without Telegram or Slack setup
 - Codex as the default AI brain
 - Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
 - Optional Anthropic/Claude, OpenAI-compatible, Gemini, and Ollama brains
@@ -104,7 +105,7 @@ Open PowerShell and run:
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
 ```
 
-This downloads the repo, installs dependencies, enables startup automation, creates Desktop and Start Menu launchers, starts Vortex in the background, and opens the Vortex desktop setup app.
+This downloads the repo, installs dependencies, enables startup automation, creates Desktop and Start Menu launchers, starts Vortex in the background, and opens the Vortex desktop app.
 
 ### Terminal Installation
 

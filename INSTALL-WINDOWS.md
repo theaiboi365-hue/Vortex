@@ -6,7 +6,7 @@ Vortex is meant to be installed like this:
 2. Copy the command below.
 3. Paste it into Windows PowerShell.
 4. Let the installer run.
-5. Fill tokens/API keys inside the Vortex app window.
+5. Chat in the Vortex app. Add Telegram/Slack/API keys only if you need them.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/theaiboi365-hue/Vortex/main/scripts/setup-windows.ps1 | iex"
@@ -37,19 +37,19 @@ The installer will:
 - Create Desktop and Start Menu launchers named `Vortex`
 - Use the Vortex logo icon for the launchers
 - Start Vortex in the background
-- Open the native Vortex desktop setup app
+- Open the native Vortex desktop app
 - Reinstall safely over an existing Vortex folder without failing when Windows has the app folder open
 
 ## After Install
 
 In the Vortex app:
 
-1. Keep `AI_PROVIDER=codex` or choose another brain in `Setup`.
-2. Add `TELEGRAM_BOT_TOKEN` in `Tokens`.
-3. Add optional Claude/OpenAI/Gemini keys in `Tokens`.
-4. Pick models in `Models`.
-5. Click `Save`.
-6. Click `Restart Bot`.
+1. Use the `Chat` tab immediately.
+2. Keep `AI_PROVIDER=codex` or choose another brain in `Setup`.
+3. Add `TELEGRAM_BOT_TOKEN` only if you want Telegram delivery.
+4. Add Slack tokens only if you want Slack delivery.
+5. Add Claude/OpenAI/Gemini keys only if you select those brains.
+6. Click `Save`, then `Restart Bot` after changing settings.
 7. Open Vortex later from Desktop or Start Menu.
 
 If Slack and Telegram tokens are blank, Vortex still opens the local dashboard without auth errors.

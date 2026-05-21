@@ -3,6 +3,7 @@ import http from "node:http";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { config, envFields } from "./config.js";
+import { askBrain } from "./brain.js";
 
 const envPath = path.join(process.cwd(), ".env");
 
@@ -32,6 +33,7 @@ function serializeEnv(values) {
     ["# Codex brain", "CODEX_COMMAND", "CODEX_MODEL", "CODEX_EXTRA_ARGS"],
     ["# Anthropic / Claude brain", "ANTHROPIC_API_KEY", "CLAUDE_MODEL"],
     ["# OpenAI-compatible brain", "OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_MODEL"],
+    ["# Gemini / Google brain", "GOOGLE_API_KEY", "GEMINI_MODEL"],
     ["# Ollama local brain", "OLLAMA_BASE_URL", "OLLAMA_MODEL"],
     ["# Local dashboard", "DASHBOARD_PORT"],
     ["# Safe agent tools", "AGENT_TOOLS_ENABLED", "AGENT_MODE"],
@@ -659,6 +661,13 @@ export function startDashboard() {
       if (request.method === "POST" && url.pathname === "/api/env") {
         await writeEnv(await readJson(request));
         return send(response, 200, { ok: true });
+      }
+      if (request.method === "POST" && url.pathname === "/api/chat") {
+        const body = await readJson(request);
+        const text = String(body.text || "").trim();
+        if (!text) return send(response, 400, { error: "Message is required." });
+        const answer = await askBrain({ source: "Vortex", text, history: [] });
+        return send(response, 200, { answer });
       }
       return send(response, 404, { error: "Not found" });
     } catch (error) {
