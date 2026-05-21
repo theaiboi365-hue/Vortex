@@ -302,6 +302,12 @@ For background start without keeping a PowerShell window open:
 powershell -ExecutionPolicy Bypass -File .\scripts\start-hidden.ps1
 ```
 
+To open Vortex like an app instead of an npm terminal:
+
+```powershell
+powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File .\scripts\open-vortex-app.ps1
+```
+
 ## Security
 
 Never commit `.env`. If you paste a token in a public place, revoke it and create a new one. The dashboard writes tokens only to your local `.env` file.
