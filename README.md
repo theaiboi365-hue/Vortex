@@ -25,7 +25,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 2. Open a local setup UI.
 3. Paste a Telegram token. Add Slack tokens only if you want Slack.
 4. Message Codex from phone or team chat.
-5. Route specific functions to Codex, Claude, OpenAI-compatible APIs, or Ollama.
+5. Route specific functions to Codex, Claude, OpenAI-compatible APIs, Gemini, or Ollama.
 
 ## Launch Kit
 
@@ -44,7 +44,8 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - Desktop and Start Menu app launchers named `Vortex`
 - Codex as the default AI brain
 - Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
-- Optional Anthropic/Claude, OpenAI-compatible, and Ollama brains
+- Optional Anthropic/Claude, OpenAI-compatible, Gemini, and Ollama brains
+- Broad model dropdowns for OpenAI GPT/Codex/reasoning, Claude Opus/Sonnet/Haiku, Gemini Pro/Flash/Flash-Lite, and popular local Ollama models
 - Telegram token UI with BotFather steps
 - Optional Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
 - Slack threaded replies by default
@@ -156,6 +157,10 @@ TELEGRAM_AI_PROVIDER=ollama
 # Slack uses Claude, Telegram uses Codex
 SLACK_AI_PROVIDER=anthropic
 TELEGRAM_AI_PROVIDER=codex
+
+# Slack uses Gemini, Telegram uses Codex
+SLACK_AI_PROVIDER=gemini
+TELEGRAM_AI_PROVIDER=codex
 ```
 
 Supported provider names:
@@ -166,6 +171,8 @@ anthropic
 claude
 openai
 openai-compatible
+gemini
+google
 ollama
 local
 ```
@@ -198,6 +205,13 @@ OpenAI-compatible:
 OPENAI_API_KEY=sk-...
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_MODEL=gpt-4.1-mini
+```
+
+Gemini / Google:
+
+```env
+GOOGLE_API_KEY=AIza...
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
 Ollama:
@@ -272,6 +286,8 @@ CLAUDE_MODEL=claude-3-5-sonnet-latest
 OPENAI_API_KEY=
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_MODEL=gpt-4.1-mini
+GOOGLE_API_KEY=
+GEMINI_MODEL=gemini-2.5-flash
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=gemma3:270m
 DASHBOARD_PORT=8787

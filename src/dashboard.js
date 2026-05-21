@@ -136,6 +136,151 @@ function send(response, status, body, type = "application/json") {
   response.end(type === "application/json" ? JSON.stringify(body, null, 2) : body);
 }
 
+function options(items) {
+  return items.map(([value, label]) => `<option value="${value}">${label}</option>`).join("\n");
+}
+
+function optionGroups(groups) {
+  return groups
+    .map(
+      ([label, items]) =>
+        `<optgroup label="${label}">\n${items.map(([value, name]) => `<option value="${value}">${name}</option>`).join("\n")}\n</optgroup>`
+    )
+    .join("\n");
+}
+
+const providerOptions = [
+  ["codex", "Codex"],
+  ["anthropic", "Claude / Anthropic"],
+  ["openai", "OpenAI-compatible"],
+  ["gemini", "Gemini / Google"],
+  ["ollama", "Ollama local"]
+];
+
+const codexModelGroups = [
+  ["Codex", [
+    ["", "Codex default"],
+    ["gpt-5.3-codex", "GPT-5.3 Codex"],
+    ["gpt-5.2-codex", "GPT-5.2 Codex"],
+    ["gpt-5.1-codex", "GPT-5.1 Codex"],
+    ["gpt-5-codex", "GPT-5 Codex"],
+    ["gpt-5.1-codex-mini", "GPT-5.1 Codex Mini"]
+  ]],
+  ["GPT", [
+    ["gpt-5.5", "GPT-5.5"],
+    ["gpt-5.4", "GPT-5.4"],
+    ["gpt-5.4-mini", "GPT-5.4 Mini"],
+    ["gpt-5.2", "GPT-5.2"],
+    ["gpt-5.2-pro", "GPT-5.2 Pro"],
+    ["gpt-5.1", "GPT-5.1"],
+    ["gpt-5.1-pro", "GPT-5.1 Pro"],
+    ["gpt-5", "GPT-5"],
+    ["gpt-5-mini", "GPT-5 Mini"],
+    ["gpt-5-nano", "GPT-5 Nano"],
+    ["gpt-4.1", "GPT-4.1"],
+    ["gpt-4.1-mini", "GPT-4.1 Mini"],
+    ["gpt-4.1-nano", "GPT-4.1 Nano"],
+    ["gpt-4o", "GPT-4o"],
+    ["gpt-4o-mini", "GPT-4o Mini"]
+  ]],
+  ["Reasoning", [
+    ["o3", "o3"],
+    ["o3-pro", "o3 Pro"],
+    ["o4-mini", "o4 Mini"]
+  ]]
+];
+
+const claudeModels = [
+  ["claude-opus-4-1-20250805", "Claude Opus 4.1"],
+  ["claude-opus-4-20250514", "Claude Opus 4"],
+  ["claude-sonnet-4-20250514", "Claude Sonnet 4"],
+  ["claude-3-7-sonnet-20250219", "Claude Sonnet 3.7"],
+  ["claude-3-5-sonnet-latest", "Claude Sonnet 3.5"],
+  ["claude-3-5-haiku-latest", "Claude Haiku 3.5"],
+  ["claude-3-opus-20240229", "Claude Opus 3"],
+  ["claude-3-sonnet-20240229", "Claude Sonnet 3"],
+  ["claude-3-haiku-20240307", "Claude Haiku 3"]
+];
+
+const openAIModelGroups = [
+  ["GPT", [
+    ["gpt-5.5", "GPT-5.5"],
+    ["gpt-5.4", "GPT-5.4"],
+    ["gpt-5.4-mini", "GPT-5.4 Mini"],
+    ["gpt-5.2", "GPT-5.2"],
+    ["gpt-5.2-pro", "GPT-5.2 Pro"],
+    ["gpt-5.1", "GPT-5.1"],
+    ["gpt-5.1-pro", "GPT-5.1 Pro"],
+    ["gpt-5", "GPT-5"],
+    ["gpt-5-mini", "GPT-5 Mini"],
+    ["gpt-5-nano", "GPT-5 Nano"],
+    ["gpt-4.1", "GPT-4.1"],
+    ["gpt-4.1-mini", "GPT-4.1 Mini"],
+    ["gpt-4.1-nano", "GPT-4.1 Nano"],
+    ["gpt-4o", "GPT-4o"],
+    ["gpt-4o-mini", "GPT-4o Mini"],
+    ["gpt-4-turbo", "GPT-4 Turbo"],
+    ["gpt-3.5-turbo", "GPT-3.5 Turbo"]
+  ]],
+  ["Reasoning", [
+    ["o3", "o3"],
+    ["o3-pro", "o3 Pro"],
+    ["o4-mini", "o4 Mini"],
+    ["o1", "o1"],
+    ["o1-pro", "o1 Pro"]
+  ]],
+  ["Realtime / Audio", [
+    ["gpt-realtime", "GPT Realtime"],
+    ["gpt-realtime-mini", "GPT Realtime Mini"],
+    ["gpt-audio", "GPT Audio"],
+    ["gpt-audio-mini", "GPT Audio Mini"]
+  ]]
+];
+
+const geminiModelGroups = [
+  ["Gemini 3", [
+    ["gemini-3-pro-preview", "Gemini 3 Pro Preview"],
+    ["gemini-3-flash-preview", "Gemini 3 Flash Preview"],
+    ["gemini-3-pro-image-preview", "Gemini 3 Pro Image Preview"]
+  ]],
+  ["Gemini 2.5", [
+    ["gemini-2.5-pro", "Gemini 2.5 Pro"],
+    ["gemini-2.5-flash", "Gemini 2.5 Flash"],
+    ["gemini-2.5-flash-lite", "Gemini 2.5 Flash-Lite"]
+  ]],
+  ["Gemini 2.0", [
+    ["gemini-2.0-flash", "Gemini 2.0 Flash"],
+    ["gemini-2.0-flash-lite", "Gemini 2.0 Flash-Lite"],
+    ["gemini-2.0-flash-preview-image-generation", "Gemini 2.0 Flash Image Preview"]
+  ]],
+  ["Gemini 1.5", [
+    ["gemini-1.5-pro", "Gemini 1.5 Pro"],
+    ["gemini-1.5-flash", "Gemini 1.5 Flash"],
+    ["gemini-1.5-flash-8b", "Gemini 1.5 Flash 8B"]
+  ]]
+];
+
+const ollamaModels = [
+  ["gemma3:270m", "Gemma 3 270M"],
+  ["gemma3:1b", "Gemma 3 1B"],
+  ["gemma3:4b", "Gemma 3 4B"],
+  ["gemma3:12b", "Gemma 3 12B"],
+  ["llama3.2", "Llama 3.2"],
+  ["llama3.2:1b", "Llama 3.2 1B"],
+  ["llama3.2:3b", "Llama 3.2 3B"],
+  ["llama3.1:8b", "Llama 3.1 8B"],
+  ["mistral", "Mistral"],
+  ["mixtral", "Mixtral"],
+  ["qwen2.5:0.5b", "Qwen 2.5 0.5B"],
+  ["qwen2.5:1.5b", "Qwen 2.5 1.5B"],
+  ["qwen2.5:7b", "Qwen 2.5 7B"],
+  ["deepseek-r1:1.5b", "DeepSeek R1 1.5B"],
+  ["deepseek-r1:7b", "DeepSeek R1 7B"],
+  ["phi4", "Phi 4"],
+  ["phi3:mini", "Phi 3 Mini"],
+  ["codellama", "Code Llama"]
+];
+
 function page() {
   return `<!doctype html>
 <html lang="en">
@@ -229,7 +374,7 @@ function page() {
     <section class="top">
       <div>
         <h1>Vortex</h1>
-        <p>Codex-first control center for Slack and Telegram. Keep Codex as the main brain, or route each function to Anthropic, OpenAI-compatible APIs, or Ollama.</p>
+        <p>Codex-first control center for Slack and Telegram. Keep Codex as the main brain, or route each function to Claude, OpenAI-compatible APIs, Gemini, or Ollama.</p>
       </div>
       <div class="pill">Local UI: <strong id="port">8787</strong></div>
     </section>
@@ -243,50 +388,35 @@ function page() {
             <div>
               <label>Default AI brain</label>
               <select name="AI_PROVIDER">
-                <option value="codex">Codex</option>
-                <option value="anthropic">Claude / Anthropic</option>
-                <option value="openai">OpenAI-compatible</option>
-                <option value="ollama">Ollama local</option>
+                ${options(providerOptions)}
               </select>
             </div>
             <div>
               <label>Slack AI brain</label>
               <select name="SLACK_AI_PROVIDER">
                 <option value="">Use default brain</option>
-                <option value="codex">Codex</option>
-                <option value="anthropic">Claude / Anthropic</option>
-                <option value="openai">OpenAI-compatible</option>
-                <option value="ollama">Ollama local</option>
+                ${options(providerOptions)}
               </select>
             </div>
             <div>
               <label>Telegram AI brain</label>
               <select name="TELEGRAM_AI_PROVIDER">
                 <option value="">Use default brain</option>
-                <option value="codex">Codex</option>
-                <option value="anthropic">Claude / Anthropic</option>
-                <option value="openai">OpenAI-compatible</option>
-                <option value="ollama">Ollama local</option>
+                ${options(providerOptions)}
               </select>
             </div>
             <div><label>Codex command</label><input name="CODEX_COMMAND" placeholder="codex" /></div>
             <div>
               <label>Codex model</label>
               <select name="CODEX_MODEL">
-                <option value="">Codex default</option>
-                <option value="gpt-5.3-codex">GPT-5.3 Codex</option>
-                <option value="gpt-5.5">GPT-5.5</option>
-                <option value="gpt-5.4">GPT-5.4</option>
-                <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
-                <option value="gpt-5.2">GPT-5.2</option>
+                ${optionGroups(codexModelGroups)}
               </select>
             </div>
             <div class="wide"><label>Codex extra args</label><input name="CODEX_EXTRA_ARGS" placeholder="optional comma-separated args" /></div>
             <div>
               <label>Claude model</label>
               <select name="CLAUDE_MODEL">
-                <option value="claude-3-5-sonnet-latest">Claude 3.5 Sonnet</option>
-                <option value="claude-3-5-haiku-latest">Claude 3.5 Haiku</option>
+                ${options(claudeModels)}
               </select>
             </div>
             <div><label>Anthropic API key</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" placeholder="sk-ant-..." /></div>
@@ -295,20 +425,21 @@ function page() {
             <div>
               <label>OpenAI model</label>
               <select name="OPENAI_MODEL">
-                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
-                <option value="gpt-4.1">GPT-4.1</option>
-                <option value="gpt-4o-mini">GPT-4o Mini</option>
-                <option value="gpt-4o">GPT-4o</option>
+                ${optionGroups(openAIModelGroups)}
+              </select>
+            </div>
+            <div><label>Google API key</label><input name="GOOGLE_API_KEY" type="password" autocomplete="off" placeholder="AIza..." /></div>
+            <div>
+              <label>Gemini model</label>
+              <select name="GEMINI_MODEL">
+                ${optionGroups(geminiModelGroups)}
               </select>
             </div>
             <div><label>Ollama base URL</label><input name="OLLAMA_BASE_URL" placeholder="http://127.0.0.1:11434" /></div>
             <div>
               <label>Ollama model</label>
               <select name="OLLAMA_MODEL">
-                <option value="gemma3:270m">Gemma 3 270M</option>
-                <option value="llama3.2">Llama 3.2</option>
-                <option value="mistral">Mistral</option>
-                <option value="qwen2.5:0.5b">Qwen 2.5 0.5B</option>
+                ${options(ollamaModels)}
               </select>
             </div>
             <div><label>Slack bot token</label><input name="SLACK_BOT_TOKEN" type="password" autocomplete="off" placeholder="xoxb-..." /></div>
@@ -371,7 +502,7 @@ function page() {
             <ol>
               <li>Use <code>codex</code> as the default brain for all functions.</li>
               <li>Set <code>SLACK_AI_PROVIDER</code> or <code>TELEGRAM_AI_PROVIDER</code> to override only that surface.</li>
-              <li>Supported values: <code>codex</code>, <code>anthropic</code>, <code>openai</code>, <code>ollama</code>.</li>
+              <li>Supported values: <code>codex</code>, <code>anthropic</code>, <code>openai</code>, <code>gemini</code>, <code>ollama</code>.</li>
             </ol>
           </div>
           <div id="telegramGuide" class="hidden">

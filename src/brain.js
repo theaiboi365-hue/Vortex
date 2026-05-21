@@ -89,6 +89,40 @@ async function askOpenAICompatible(input) {
   return data.choices?.[0]?.message?.content?.trim() || "";
 }
 
+async function askGemini(input) {
+  if (!config.brain.googleApiKey) {
+    return "Gemini is selected for this function, but GOOGLE_API_KEY is missing.";
+  }
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${config.brain.geminiModel}:generateContent?key=${encodeURIComponent(config.brain.googleApiKey)}`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: config.systemPrompt }]
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: buildPrompt(input) }]
+          }
+        ]
+      })
+    }
+  );
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error?.message || "Gemini request failed");
+  return (
+    data.candidates?.[0]?.content?.parts
+      ?.map((part) => part.text || "")
+      .join("\n")
+      .trim() || ""
+  );
+}
+
 async function askOllama(input) {
   const response = await fetch(`${config.brain.ollamaBaseUrl.replace(/\/$/, "")}/api/chat`, {
     method: "POST",
@@ -114,6 +148,7 @@ export async function askBrain(input) {
   if (provider === "codex") return askCodex(input);
   if (provider === "anthropic" || provider === "claude") return askAnthropic(input);
   if (provider === "openai" || provider === "openai-compatible") return askOpenAICompatible(input);
+  if (provider === "google" || provider === "gemini") return askGemini(input);
   if (provider === "ollama" || provider === "local") return askOllama(input);
-  return `Unknown AI provider "${provider}". Use codex, anthropic, openai, or ollama.`;
+  return `Unknown AI provider "${provider}". Use codex, anthropic, openai, gemini, or ollama.`;
 }

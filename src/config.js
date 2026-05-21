@@ -42,6 +42,8 @@ export const config = {
     openaiApiKey: process.env.OPENAI_API_KEY || "",
     openaiBaseUrl: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
     openaiModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+    googleApiKey: process.env.GOOGLE_API_KEY || "",
+    geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash",
     ollamaBaseUrl: process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434",
     ollamaModel: process.env.OLLAMA_MODEL || "gemma3:270m"
   },
@@ -72,6 +74,8 @@ export const envFields = [
   "OPENAI_API_KEY",
   "OPENAI_BASE_URL",
   "OPENAI_MODEL",
+  "GOOGLE_API_KEY",
+  "GEMINI_MODEL",
   "OLLAMA_BASE_URL",
   "OLLAMA_MODEL",
   "ANTHROPIC_API_KEY",
