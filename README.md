@@ -45,7 +45,7 @@ Most agent projects are powerful but heavy. This repo is designed around the sho
 - Codex as the default AI brain
 - Per-function routing with `AI_PROVIDER`, `SLACK_AI_PROVIDER`, and `TELEGRAM_AI_PROVIDER`
 - Optional Anthropic/Claude, OpenAI-compatible, Gemini, and Ollama brains
-- Broad model dropdowns for OpenAI GPT/Codex/reasoning, Claude Opus/Sonnet/Haiku, Gemini Pro/Flash/Flash-Lite, and popular local Ollama models
+- Broad model pickers for OpenAI GPT/Codex/reasoning, Claude Opus/Sonnet/Haiku, Gemini Pro/Flash/Flash-Lite, and popular local Ollama models, with custom model typing for newer provider releases
 - Telegram token UI with BotFather steps
 - Optional Slack token UI for `xoxb` bot tokens and `xapp` Socket Mode tokens
 - Slack threaded replies by default

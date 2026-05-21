@@ -149,6 +149,13 @@ function optionGroups(groups) {
     .join("\n");
 }
 
+function dataListOptions(groupsOrItems) {
+  const items = Array.isArray(groupsOrItems[0]?.[1]?.[0])
+    ? groupsOrItems.flatMap(([, groupItems]) => groupItems)
+    : groupsOrItems;
+  return items.map(([value, label]) => `<option value="${value}">${label}</option>`).join("\n");
+}
+
 const providerOptions = [
   ["codex", "Codex"],
   ["anthropic", "Claude / Anthropic"],
@@ -408,39 +415,34 @@ function page() {
             <div><label>Codex command</label><input name="CODEX_COMMAND" placeholder="codex" /></div>
             <div>
               <label>Codex model</label>
-              <select name="CODEX_MODEL">
-                ${optionGroups(codexModelGroups)}
-              </select>
+              <input name="CODEX_MODEL" list="codexModels" placeholder="Pick or type any Codex/OpenAI model" />
+              <datalist id="codexModels">${dataListOptions(codexModelGroups)}</datalist>
             </div>
             <div class="wide"><label>Codex extra args</label><input name="CODEX_EXTRA_ARGS" placeholder="optional comma-separated args" /></div>
             <div>
               <label>Claude model</label>
-              <select name="CLAUDE_MODEL">
-                ${options(claudeModels)}
-              </select>
+              <input name="CLAUDE_MODEL" list="claudeModels" placeholder="Pick or type any Claude model" />
+              <datalist id="claudeModels">${dataListOptions(claudeModels)}</datalist>
             </div>
             <div><label>Anthropic API key</label><input name="ANTHROPIC_API_KEY" type="password" autocomplete="off" placeholder="sk-ant-..." /></div>
             <div><label>OpenAI API key</label><input name="OPENAI_API_KEY" type="password" autocomplete="off" placeholder="sk-..." /></div>
             <div><label>OpenAI base URL</label><input name="OPENAI_BASE_URL" placeholder="https://api.openai.com/v1" /></div>
             <div>
               <label>OpenAI model</label>
-              <select name="OPENAI_MODEL">
-                ${optionGroups(openAIModelGroups)}
-              </select>
+              <input name="OPENAI_MODEL" list="openAIModels" placeholder="Pick or type any OpenAI-compatible model" />
+              <datalist id="openAIModels">${dataListOptions(openAIModelGroups)}</datalist>
             </div>
             <div><label>Google API key</label><input name="GOOGLE_API_KEY" type="password" autocomplete="off" placeholder="AIza..." /></div>
             <div>
               <label>Gemini model</label>
-              <select name="GEMINI_MODEL">
-                ${optionGroups(geminiModelGroups)}
-              </select>
+              <input name="GEMINI_MODEL" list="geminiModels" placeholder="Pick or type any Gemini model" />
+              <datalist id="geminiModels">${dataListOptions(geminiModelGroups)}</datalist>
             </div>
             <div><label>Ollama base URL</label><input name="OLLAMA_BASE_URL" placeholder="http://127.0.0.1:11434" /></div>
             <div>
               <label>Ollama model</label>
-              <select name="OLLAMA_MODEL">
-                ${options(ollamaModels)}
-              </select>
+              <input name="OLLAMA_MODEL" list="ollamaModels" placeholder="Pick or type any installed Ollama model" />
+              <datalist id="ollamaModels">${dataListOptions(ollamaModels)}</datalist>
             </div>
             <div><label>Slack bot token</label><input name="SLACK_BOT_TOKEN" type="password" autocomplete="off" placeholder="xoxb-..." /></div>
             <div><label>Slack app token</label><input name="SLACK_APP_TOKEN" type="password" autocomplete="off" placeholder="xapp-..." /></div>
