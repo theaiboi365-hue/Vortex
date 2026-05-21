@@ -325,13 +325,6 @@ $form.Add_Shown({
   $form.Activate()
   $form.BringToFront()
   Load-VortexData
-  $timer = New-Object System.Windows.Forms.Timer
-  $timer.Interval = 1200
-  $timer.Add_Tick({
-    $form.TopMost = $false
-    $timer.Stop()
-    $timer.Dispose()
-  })
-  $timer.Start()
+  $form.TopMost = $false
 })
 [void]$form.ShowDialog()
